@@ -44,6 +44,10 @@
 (advice-add '+org-fix-package-h
             :override (lambda (&rest r)))
 
+;; don't try adding the git hooks
+(advice-add 'doom-cli--ci-deploy-hooks
+            :override (lambda (&rest r)))
+
 ;; just use straight provided by nix
 (advice-add 'doom-initialize-core-packages
             :override (lambda (&rest r)
