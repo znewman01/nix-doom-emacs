@@ -78,7 +78,7 @@ Using `flake.nix`:
 ## Under the hood
 
 This expression leverages
-[nix-straight.el](https://github.com/vlaci/nix-straight.el) under the hood for
+[nix-straight.el](https://github.com/nix-community/nix-straight.el) under the hood for
 installing dependencies. The restrictions of that package apply here too.
 
 ## Usage
