@@ -3,7 +3,7 @@
   {
     inputs = {
       home-manager.url = "github:rycee/home-manager";
-      nix-doom-emacs.url = "github:vlaci/nix-doom-emacs/flake";
+      nix-doom-emacs.url = "github:nix-community/nix-doom-emacs/flake";
     };
 
     outputs = {
