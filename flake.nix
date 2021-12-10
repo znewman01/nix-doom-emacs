@@ -70,6 +70,8 @@
     revealjs.flake = false;
     rotate-text.url = "github:debug-ito/rotate-text.el";
     rotate-text.flake = false;
+    format-all.url = "github:lassik/emacs-format-all-the-code/47d862d40a088ca089c92cd393c6dca4628f87d3";
+    format-all.flake = false;
 
     nixpkgs.url = "nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
