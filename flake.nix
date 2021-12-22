@@ -96,7 +96,7 @@
     eachSystem [ "x86_64-linux" ]
       (system: {
         checks = {
-          init-example-el = nixpkgs.legacyPackages.${system}.callPackage ./. { doomPrivateDir = ./test/doom.d; dependencyOverrides = inputs; };
+          init-example-el = self.outputs.package.${system} { doomPrivateDir = ./test/doom.d; dependencyOverrides = inputs; };
         };
       }) //
     {
