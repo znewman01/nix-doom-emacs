@@ -38,6 +38,10 @@ class FlakeLock:
     def inputs(self):
         return self._lock["nodes"]["root"]["inputs"]
 
+    def is_github(self, flake_input):
+        n = self._lock["nodes"][flake_input]
+        return n.type == "github";
+
     def get_input(self, flake_input):
         n = self._lock["nodes"][flake_input]
         repo_id = f"{n['locked']['owner']}/{n['locked']['repo']}"
@@ -130,6 +134,10 @@ def main():
             updated_lock_contents = "".join(updated_lock_lines)
             for l in diff:
                 print(l, end="")
+
+            if not lock.is_github(flake_input):
+                print(f"[{flake_input}] Non-github repositories unsupported")
+                continue
 
             old = lock.get_input(flake_input)
             new = FlakeLock(github, updated_lock_contents).get_input(flake_input)
