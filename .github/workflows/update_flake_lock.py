@@ -40,7 +40,7 @@ class FlakeLock:
 
     def is_github(self, flake_input):
         n = self._lock["nodes"][flake_input]
-        return n.type == "github";
+        return n["locked"]["type"] == "github";
 
     def get_input(self, flake_input):
         n = self._lock["nodes"][flake_input]
