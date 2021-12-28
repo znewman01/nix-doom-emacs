@@ -1,5 +1,32 @@
+From 414206d3dd6ef3995fff67a89f26f13b0f0e1bf9 Mon Sep 17 00:00:00 2001
+From: ckie <git-525ff67@ckie.dev>
+Date: Mon, 27 Dec 2021 23:15:28 +0200
+Subject: [PATCH] nix integration
+
+---
+ core/core-cli.el | 4 ++--
+ core/core.el     | 7 ++++---
+ 2 files changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/core/core-cli.el b/core/core-cli.el
+index 2ebd05ed6..fc49eb74f 100644
+--- a/core/core-cli.el
++++ b/core/core-cli.el
+@@ -15,10 +15,10 @@ These are loaded when a Doom's CLI starts up. There users and modules can define
+ additional CLI commands, or reconfigure existing ones to better suit their
+ purpose.")
+ 
+-(defvar doom-cli-log-file (concat doom-local-dir "doom.log")
++(defvar doom-cli-log-file (concat doom-cache-dir "doom.log")
+   "Where to write the extended output to.")
+ 
+-(defvar doom-cli-log-error-file (concat doom-local-dir "doom.error.log")
++(defvar doom-cli-log-error-file (concat doom-cache-dir "doom.error.log")
+   "Where to write the last backtrace to.")
+ 
+ (defvar doom--cli-log-buffer (generate-new-buffer " *doom log*"))
 diff --git a/core/core.el b/core/core.el
-index c74f5b031..9ee1687fb 100644
+index c74f5b031..bbc5bab9c 100644
 --- a/core/core.el
 +++ b/core/core.el
 @@ -68,7 +68,7 @@ envvar will enable this at startup.")
@@ -35,3 +62,6 @@ index c74f5b031..9ee1687fb 100644
  
    (with-eval-after-load 'comp
      ;; HACK Disable native-compilation for some troublesome packages
+-- 
+2.33.0
+
