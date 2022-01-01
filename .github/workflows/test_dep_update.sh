@@ -1,15 +1,14 @@
 #!/usr/bin/env nix-shell
 #!nix-shell -i bash -p gh jq
 set -e
-echo "$GITHUB_API_TOKEN" | gh auth --with-token
+echo "$GITHUB_API_TOKEN" | gh auth login --with-token
 git branch -d depupdate || true
 git branch depupdate
 git checkout depupdate
 json="$(gh pr list --search "author:app/github-actions" --json headRefName,number)"
 echo "$json" | jq '.[] | .headRefName | @text' | xargs -L1 -- git pull --rebase origin
 if nix flake check; then
-    #echo "$json" | jq ".[] | .number | @text" | xargs gh pr merge
-    echo wouldve merged-all
+    echo "$json" | jq ".[] | .number | @text" | xargs -L1 -- gh pr merge --rebase --delete-branch
 else
     gh issue create \
         --title "Recent Dependency update PRs failing tests" \
