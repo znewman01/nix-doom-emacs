@@ -31,6 +31,7 @@ jobs:
         nix develop -c .github/workflows/update_init_el.py
   automerge-deps:
     name: Automerge dependency updates
+    needs: [update-deps]
     runs-on: ubuntu-latest
     steps:
     - name: Configure git
