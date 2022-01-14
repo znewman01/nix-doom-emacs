@@ -8,7 +8,7 @@ git checkout depupdate
 json="$(gh pr list --search "author:app/github-actions" --json headRefName,number)"
 echo "$json" | jq '.[] | .headRefName | @text' | xargs -L1 -- git pull --rebase origin
 if nix flake check; then
-    echo "$json" | jq ".[] | .number | @text" | xargs -L1 -- gh pr merge --rebase --delete-branch
+    echo "$json" | jq ".[] | .number | @text" | xargs -L1 -- gh pr merge --squash --delete-branch
 else
     gh issue create \
         --title "Recent Dependency update PRs failing tests" \

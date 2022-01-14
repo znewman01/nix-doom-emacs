@@ -39,6 +39,7 @@ jobs:
         git config --global core.autocrlf false
         git config --global user.name github-actions[bot]
         git config --global user.email 41898282+github-actions[bot]@users.noreply.github.com
+        git config --global init.defaultBranch main
     - uses: actions/checkout@v2
       with:
           # Nix Flakes doesn't work on shallow clones
