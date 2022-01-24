@@ -201,7 +201,7 @@ let
     passAsFile = [ "extraConfig" ];
   } ''
       mkdir -p $out
-      cp -r ${doomPrivateDir}/* $out
+      cp -rL ${doomPrivateDir}/* $out
       chmod u+w $out/config.el
       cat $extraConfigPath > $out/config.extra.el
       cat > $out/config.el << EOF
