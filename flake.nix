@@ -36,7 +36,7 @@
   description = "nix-doom-emacs home-manager module";
 
   inputs = {
-    doom-emacs.url = "github:hlissner/doom-emacs/develop";
+    doom-emacs.url = "github:hlissner/doom-emacs/master";
     doom-emacs.flake = false;
     doom-snippets.url = "github:hlissner/doom-snippets";
     doom-snippets.flake = false;
