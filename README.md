@@ -61,7 +61,7 @@ Using `flake.nix`:
       system = "x86_64-linux";
       modules = [
         home-manager.nixosModules.home-manager
-        {
+        ({
           home-manager.users.exampleUser = lib.mkMerge [
             nix-doom-emacs.hmModule
             { ... }: {
@@ -71,7 +71,7 @@ Using `flake.nix`:
               };
             }
           ];
-        }
+        })
       ];
     };
   };
