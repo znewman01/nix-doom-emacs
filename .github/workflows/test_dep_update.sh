@@ -2,7 +2,7 @@
 #!nix-shell -i bash -p gh jq
 set -e
 echo "$GITHUB_API_TOKEN" | gh auth login --with-token
-git branch -d depupdate || true
+git branch -D depupdate || true
 git branch depupdate
 git checkout depupdate
 json="$(gh pr list --search "author:app/github-actions" --json headRefName,number)"
