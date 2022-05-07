@@ -44,7 +44,7 @@ doomPrivateDir
 , bundledPackages ? true
   /* Override dependency versions
 
-     Hadful for testing out updated dependencies without publishing
+     Handy for testing out updated dependencies without publishing
      a new version of them.
 
      Type: dependencyOverrides :: attrset -> either path derivation
