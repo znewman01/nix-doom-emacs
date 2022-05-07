@@ -1,14 +1,15 @@
 { # The files would be going to ~/.config/doom (~/.doom.d)
-  doomPrivateDir
-  /* Extra packages to install
+doomPrivateDir
+/* Extra packages to install
 
-     Useful for non-emacs packages containing emacs bindings (e.g.
-     mu4e).
+   Useful for non-emacs packages containing emacs bindings (e.g.
+   mu4e).
 
-     Example:
-       extraPackages = epkgs: [ pkgs.mu ];
-  */
-, extraPackages ? epkgs: []
+   Example:
+     extraPackages = epkgs: [ pkgs.mu ];
+*/
+, extraPackages ? epkgs:
+  [ ]
   /* Extra configuration to source during initialization
 
      Use this to refer other nix derivations.
@@ -24,18 +25,19 @@
      Only used to get emacs package, if `bundledPackages` is set.
   */
 , emacsPackages
-  /* Overlay to customize emacs (elisp) dependencies
+/* Overlay to customize emacs (elisp) dependencies
 
-     See overrides.nix for addition examples.
+   See overrides.nix for addition examples.
 
-     Example:
-       emacsPackagesOverlay = self: super: {
-         magit-delta = super.magit-delta.overrideAttrs (esuper: {
-           buildInputs = esuper.buildInputs ++ [ pkgs.git ];
-         });
-       };
-  */
-, emacsPackagesOverlay ? self: super: {  }
+   Example:
+     emacsPackagesOverlay = self: super: {
+       magit-delta = super.magit-delta.overrideAttrs (esuper: {
+         buildInputs = esuper.buildInputs ++ [ pkgs.git ];
+       });
+     };
+*/
+, emacsPackagesOverlay ? self: super:
+  { }
   /* Use bundled revision of github.com/nix-community/emacs-overlay
      as `emacsPackages`.
   */
@@ -52,38 +54,31 @@
          "emacs-overlay" = fetchFromGitHub { owner = /* ...*\/; };
        };
   */
-, dependencyOverrides ? { }
-, lib
-, pkgs
-, stdenv
-, buildEnv
-, makeWrapper
-, runCommand
-, fetchFromGitHub
-, substituteAll
-, writeShellScript
-, writeShellScriptBin
-, writeTextDir }:
+, dependencyOverrides ? { }, lib, pkgs, stdenv, buildEnv, makeWrapper
+, runCommand, fetchFromGitHub, substituteAll, writeShellScript
+, writeShellScriptBin, writeTextDir }:
 
-assert (lib.assertMsg (
-  (builtins.isPath doomPrivateDir) ||
-  (lib.isDerivation doomPrivateDir) ||
-  (lib.isStorePath doomPrivateDir)) "doomPrivateDir must be either a path, a derivation or a stringified store path");
+assert (lib.assertMsg ((builtins.isPath doomPrivateDir)
+  || (lib.isDerivation doomPrivateDir) || (lib.isStorePath doomPrivateDir))
+  "doomPrivateDir must be either a path, a derivation or a stringified store path");
 
 let
-  flake = import ./flake-compat-helper.nix { src=./.; };
-  lock = p: if dependencyOverrides ? ${p}
-            then dependencyOverrides.${p}
-            else flake.inputs.${p};
+  flake = import ./flake-compat-helper.nix { src = ./.; };
+  lock = p:
+    if dependencyOverrides ? ${p} then
+      dependencyOverrides.${p}
+    else
+      flake.inputs.${p};
   # Packages we need to get the default doom configuration run
   overrides = self: super:
-    (pkgs.callPackage ./overrides.nix { inherit lock; } self super) // (emacsPackagesOverlay self super);
+    (pkgs.callPackage ./overrides.nix { inherit lock; } self super)
+    // (emacsPackagesOverlay self super);
 
   # Stage 1: prepare source for byte-compilation
   doomSrc = stdenv.mkDerivation {
     name = "doom-src";
     src = lock "doom-emacs";
-    phases = ["unpackPhase" "patchPhase" "installPhase"];
+    phases = [ "unpackPhase" "patchPhase" "installPhase" ];
     patches = [
       (substituteAll {
         src = ./fix-paths.patch;
@@ -97,79 +92,73 @@ let
   };
 
   fmt = {
-    reset=''\\033[0m'';
-    bold=''\\033[1m'';
-    red=''\\033[31m'';
-    green=''\\033[32m'';
+    reset = "\\\\033[0m";
+    bold = "\\\\033[1m";
+    red = "\\\\033[31m";
+    green = "\\\\033[32m";
   };
 
   # Bundled version of `emacs-overlay`
   emacs-overlay = import (lock "emacs-overlay") pkgs pkgs;
 
   # Stage 2: install dependencies and byte-compile prepared source
-  doomLocal =
-    let
-      straight-env = pkgs.callPackage (lock "nix-straight") {
-        emacsPackages =
-          if bundledPackages then
-            let
-              epkgs = emacs-overlay.emacsPackagesFor emacsPackages.emacs;
-            in epkgs.overrideScope' overrides
-          else
-            emacsPackages.overrideScope' overrides;
-        emacs = emacsPackages.emacsWithPackages extraPackages;
-        emacsLoadFiles = [ ./advice.el ];
-        emacsArgs = [
-          "--"
-          "install"
-        ];
+  doomLocal = let
+    straight-env = pkgs.callPackage (lock "nix-straight") {
+      emacsPackages = if bundledPackages then
+        let epkgs = emacs-overlay.emacsPackagesFor emacsPackages.emacs;
+        in epkgs.overrideScope' overrides
+      else
+        emacsPackages.overrideScope' overrides;
+      emacs = emacsPackages.emacsWithPackages extraPackages;
+      emacsLoadFiles = [ ./advice.el ];
+      emacsArgs = [ "--" "install" ];
 
       # Need to reference a store path here, as byte-compilation will bake-in
       # absolute path to source files.
-        emacsInitFile = "${doomSrc}/bin/doom";
-      };
+      emacsInitFile = "${doomSrc}/bin/doom";
+    };
 
-      packages = straight-env.packageList (super: {
-        phases = [ "installPhase" ];
-        preInstall = ''
-          export DOOMDIR=${doomPrivateDir}
-          export DOOMLOCALDIR=$(mktemp -d)/local/
-        '';
-      });
-
-      # I don't know why but byte-compilation somehow triggers Emacs to look for
-      # the git executable. It does not seem to be executed though...
-      git = writeShellScriptBin "git" ''
-        >&2 echo "Executing git is not allowed; command line:" "$@"
-        exit 127
-      '';
-    in (straight-env.emacsEnv {
-      inherit packages;
-      straightDir = "$DOOMLOCALDIR/straight";
-    }).overrideAttrs (super: {
+    packages = straight-env.packageList (super: {
       phases = [ "installPhase" ];
-      buildInputs = super.buildInputs ++ [ git ];
       preInstall = ''
-          export DOOMDIR=${doomPrivateDir}
-          export DOOMLOCALDIR=$out/
-
-          # Create a bogus $HOME directory because gccEmacs is known to require
-          # an existing home directory because the async worker process don't
-          # fully respect the value of 'comp-eln-load-path'.
-          export HOME=$(mktemp -d)
-      '';
-      postInstall = ''
-        # If gccEmacs or anything would write in $HOME, fail the build.
-        if [[ -z "$(find $HOME -maxdepth 0 -empty)" ]]; then
-          printf "${fmt.red}${fmt.bold}ERROR:${fmt.reset} "
-          printf "${fmt.red}doom-emacs build resulted in files being written in "'$HOME'" of the build sandbox.\n"
-          printf "Contents of "'$HOME'":\n"
-          find $HOME
-          printf ${fmt.reset}
-          exit 33
-        fi
+        export DOOMDIR=${doomPrivateDir}
+        export DOOMLOCALDIR=$(mktemp -d)/local/
       '';
     });
+
+    # I don't know why but byte-compilation somehow triggers Emacs to look for
+    # the git executable. It does not seem to be executed though...
+    git = writeShellScriptBin "git" ''
+      >&2 echo "Executing git is not allowed; command line:" "$@"
+      exit 127
+    '';
+  in (straight-env.emacsEnv {
+    inherit packages;
+    straightDir = "$DOOMLOCALDIR/straight";
+  }).overrideAttrs (super: {
+    phases = [ "installPhase" ];
+    buildInputs = super.buildInputs ++ [ git ];
+    preInstall = ''
+      export DOOMDIR=${doomPrivateDir}
+      export DOOMLOCALDIR=$out/
+
+      # Create a bogus $HOME directory because gccEmacs is known to require
+      # an existing home directory because the async worker process don't
+      # fully respect the value of 'comp-eln-load-path'.
+      export HOME=$(mktemp -d)
+    '';
+    postInstall = ''
+      # If gccEmacs or anything would write in $HOME, fail the build.
+      if [[ -z "$(find $HOME -maxdepth 0 -empty)" ]]; then
+        printf "${fmt.red}${fmt.bold}ERROR:${fmt.reset} "
+        printf "${fmt.red}doom-emacs build resulted in files being written in "'$HOME'" of the build sandbox.\n"
+        printf "Contents of "'$HOME'":\n"
+        find $HOME
+        printf ${fmt.reset}
+        exit 33
+      fi
+    '';
+  });
 
   # Stage 3: do additional fixups to refer compiled files in the store
   # and additional files in the users' home
@@ -200,14 +189,14 @@ let
     inherit extraConfig;
     passAsFile = [ "extraConfig" ];
   } ''
-      mkdir -p $out
-      cp -rL ${doomPrivateDir}/* $out
-      chmod u+w $out/config.el
-      cat $extraConfigPath > $out/config.extra.el
-      cat > $out/config.el << EOF
-      (load "${builtins.toString doomPrivateDir}/config.el")
-      (load "$out/config.extra.el")
-      EOF
+    mkdir -p $out
+    cp -rL ${doomPrivateDir}/* $out
+    chmod u+w $out/config.el
+    cat $extraConfigPath > $out/config.extra.el
+    cat > $out/config.el << EOF
+    (load "${builtins.toString doomPrivateDir}/config.el")
+    (load "$out/config.extra.el")
+    EOF
   '';
 
   # Stage 5: catch-all wrapper capable to run doom-emacs even
@@ -220,19 +209,17 @@ let
             (load "${doom-emacs}/early-init.el"))
       (load "${doom-emacs}/init.el")
     '';
-  in (emacsPackages.emacsWithPackages (epkgs: [
-    load-config-from-site
-  ]));
+  in (emacsPackages.emacsWithPackages (epkgs: [ load-config-from-site ]));
 
   build-summary = writeShellScript "build-summary" ''
-      printf "\n${fmt.green}Successfully built nix-doom-emacs!${fmt.reset}\n"
-      printf "${fmt.bold}  ==> doom-emacs is installed to ${doom-emacs}${fmt.reset}\n"
-      printf "${fmt.bold}  ==> private configuration is installed to ${doomDir}${fmt.reset}\n"
-      printf "${fmt.bold}  ==> Dependencies are installed to ${doomLocal}${fmt.reset}\n"
+    printf "\n${fmt.green}Successfully built nix-doom-emacs!${fmt.reset}\n"
+    printf "${fmt.bold}  ==> doom-emacs is installed to ${doom-emacs}${fmt.reset}\n"
+    printf "${fmt.bold}  ==> private configuration is installed to ${doomDir}${fmt.reset}\n"
+    printf "${fmt.bold}  ==> Dependencies are installed to ${doomLocal}${fmt.reset}\n"
   '';
-in
-emacs.overrideAttrs (esuper:
-  let cmd = ''
+in emacs.overrideAttrs (esuper:
+  let
+    cmd = ''
       wrapEmacs() {
           wrapProgram $1 \
                     --set DOOMDIR ${doomDir} \
@@ -262,15 +249,9 @@ emacs.overrideAttrs (esuper:
       ln -s ${esuper.emacs}/share $out
       ${build-summary}
     '';
-  in
-    if esuper ? buildCommand then
-      {
-        buildCommand = esuper.buildCommand + cmd;
-      }
-    else if esuper ? installPhase then
-      {
-        installPhase = esuper.installPhase + cmd;
-      }
-    else
-      abort "emacsWithPackages uses unknown derivation type"
-)
+  in if esuper ? buildCommand then {
+    buildCommand = esuper.buildCommand + cmd;
+  } else if esuper ? installPhase then {
+    installPhase = esuper.installPhase + cmd;
+  } else
+    abort "emacsWithPackages uses unknown derivation type")
