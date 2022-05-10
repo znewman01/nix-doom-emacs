@@ -90,7 +90,7 @@
         package = { dependencyOverrides ? { }, ... }@args:
           pkgs.callPackage self
           (args // { dependencyOverrides = (inputs // dependencyOverrides); });
-      }) // eachSystem [ "x86_64-linux" ] (system: {
+      }) // eachSystem [ "x86_64-linux" "aarch64-darwin" ] (system: {
         checks = {
           init-example-el = self.outputs.package.${system} {
             doomPrivateDir = ./test/doom.d;
