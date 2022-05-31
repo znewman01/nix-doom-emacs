@@ -15,7 +15,15 @@ fi
 
 echo "$json" | jq '.[] | .headRefName | @text' | xargs -L1 -- git pull origin
 if nix build .#checks.x86_64-linux.init-example-el; then
-    echo "$json" | jq ".[] | .number | @text" | xargs -L1 -- gh pr merge --squash --delete-branch
+    prs=$(echo "$json" | jq ".[] | .number")
+    for pr in $prs; do
+        # Whenever there's a bunch of PRs to merge at the same time
+        # the GitHub API needs some time to update its internal
+        # state before allowing another PR to be merged.
+        sleep 5
+
+        gh pr merge --squash --delete-branch "$pr"
+    done
 else
     gh issue create \
         --title "Recent Dependency update PRs failing tests" \
