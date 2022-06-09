@@ -7,7 +7,7 @@ on:
       - develop
 jobs:
   check:
-    name: Flake Check
+    name: Flake Check (x86_64 only)
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -35,7 +35,7 @@ jobs:
           rm nix-store.dump
         fi
     - run: |
-        nix flake check -L
+        nix build .#checks.x86-64-linux.init-example-el
     - name: Export /nix/store contents
       if: ${{ !steps.cache-nix-store.outputs.cache-hit }}
       run: |
