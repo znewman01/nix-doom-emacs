@@ -208,7 +208,7 @@ let
       loading from `site-lisp'")
       (when (> emacs-major-version 26)
             (load "${doom-emacs}/early-init.el"))
-      (load "${doom-emacs}/init.el")
+      (load "${doom-emacs}/core/core-start.el")
     '';
   in (emacsPackages.emacsWithPackages (epkgs: [ load-config-from-site ]));
 
