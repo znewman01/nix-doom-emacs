@@ -120,6 +120,7 @@ let
 
     packages = straight-env.packageList (super: {
       phases = [ "installPhase" ];
+      nativeBuildInputs = [ git ];
       preInstall = ''
         export DOOMDIR=${doomPrivateDir}
         export DOOMLOCALDIR=$(mktemp -d)/local/
@@ -137,7 +138,7 @@ let
     straightDir = "$DOOMLOCALDIR/straight";
   }).overrideAttrs (super: {
     phases = [ "installPhase" ];
-    buildInputs = super.buildInputs ++ [ git ];
+    nativeBuildInputs = [ git ];
     preInstall = ''
       export DOOMDIR=${doomPrivateDir}
       export DOOMLOCALDIR=$out/

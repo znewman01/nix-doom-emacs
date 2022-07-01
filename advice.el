@@ -27,9 +27,11 @@
                       (advice-add 'doom-autoloads-reload
                                   :override (lambda (&optional file force-p)
                                               (message "[nix-doom-emacs] Skipping generating autoloads...")))
-                      (advice-add 'doom--print
-                                  :override (lambda (output)
-                                              (princ (format "%s\n" output) 'external-debugging-output)))
+                      (advice-add 'doom-print
+                                  :around (lambda (orig-print &rest args)
+                                              (setq standard-output #'external-debugging-output)
+                                              (apply orig-print args)
+                                              (setq standard-output 't)))
                       (advice-add 'kill-emacs
                                   :override #'nix-straight-inhibit-kill-emacs)
                       (apply orig-fn r)
