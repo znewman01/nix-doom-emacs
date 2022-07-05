@@ -98,6 +98,10 @@ self: super: {
     pname = "rotate-text";
   };
 
+  sln-mode = self.straightBuild {
+    pname = "sln-mode";
+  };
+
   so-long = self.straightBuild {
     pname = "emacs-so-long";
     ename = "so-long";
