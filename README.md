@@ -106,11 +106,13 @@ Under the line:
 in your configuration, you would add the following:
 
 ```Nix
+{
   emacsPackagesOverlay = self: super: {
      magit-delta = super.magit-delta.overrideAttrs (esuper: {
        buildInputs = esuper.buildInputs ++ [ pkgs.git ];
      });
   };
+}
 ```
 
 To make the git dependency available. trying to rebuild doom-emacs with
@@ -123,9 +125,11 @@ or `nix-darwin`) and use the doom emacs package. `doom-emacs` will need to be
 referenced at the top of your config file.
 
 ```nix
-services.emacs = {
-  enable = true;
-  package = doom-emacs;  # use programs.emacs.package instead if using home-manager
+{
+  services.emacs = {
+    enable = true;
+    package = doom-emacs;  # use programs.emacs.package instead if using home-manager
+  };
 }
 ```
 
