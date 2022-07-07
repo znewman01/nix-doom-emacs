@@ -62,7 +62,7 @@
     nose.flake = false;
     ob-racket.url = "github:xchrishawk/ob-racket";
     ob-racket.flake = false;
-    org-contrib.url = "git+https://git.sr.ht/~bzg/org-contrib";
+    org-contrib.url = "github:emacsmirror/org-contrib";
     org-contrib.flake = false;
     org-yt.url = "github:TobiasZawada/org-yt";
     org-yt.flake = false;

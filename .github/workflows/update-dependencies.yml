@@ -8,15 +8,13 @@ jobs:
     name: Update dependencies
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
           # Nix Flakes doesn't work on shallow clones
           fetch-depth: 0
-    - uses: cachix/install-nix-action@v12
+    - uses: cachix/install-nix-action@v17
       with:
-        install_url: https://github.com/numtide/nix-flakes-installer/releases/download/nix-2.4pre20201221_9fab14a/install
-        extra_nix_config: |
-          experimental-features = nix-command flakes
+        name: nix-community
     - name: Create PRs for dependencies
       env:
         GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -41,15 +39,13 @@ jobs:
         git config --global user.email 41898282+github-actions[bot]@users.noreply.github.com
         git config --global init.defaultBranch main
         git config --global pull.rebase false
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
           # Nix Flakes doesn't work on shallow clones
           fetch-depth: 0
-    - uses: cachix/install-nix-action@v12
+    - uses: cachix/install-nix-action@v17
       with:
-        install_url: https://github.com/numtide/nix-flakes-installer/releases/download/nix-2.4pre20201221_9fab14a/install
-        extra_nix_config: |
-          experimental-features = nix-command flakes
+        name: nix-community
     - name: Run test_dep_update
       env:
         GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
