@@ -103,6 +103,10 @@ self: super: {
     ename = "so-long";
   };
 
+  ts-fold = self.straightBuild {
+    pname = "ts-fold";
+  };
+
   ob-racket = self.straightBuild {
     pname = "ob-racket";
   };

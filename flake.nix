@@ -76,6 +76,8 @@
     rotate-text.flake = false;
     sln-mode.url = "github:sensorflo/sln-mode";
     sln-mode.flake = false;
+    ts-fold.url = "github:jcs-elpa/ts-fold";
+    ts-fold.flake = false;
     ws-butler.url = "github:hlissner/ws-butler";
     ws-butler.flake = false;
 

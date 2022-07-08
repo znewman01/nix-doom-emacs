@@ -361,6 +361,7 @@
         "revealjs": "revealjs",
         "rotate-text": "rotate-text",
         "sln-mode": "sln-mode",
+        "ts-fold": "ts-fold",
         "ws-butler": "ws-butler"
       }
     },
@@ -393,6 +394,22 @@
       "original": {
         "owner": "sensorflo",
         "repo": "sln-mode",
+        "type": "github"
+      }
+    },
+    "ts-fold": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1657091443,
+        "narHash": "sha256-yr/aW7sYoOxajVb2gTgRrwaDwwg2gtHuP3wdrwjiaxo=",
+        "owner": "jcs-elpa",
+        "repo": "ts-fold",
+        "rev": "dcd5b9fe5c2cb72261ff6c714beb8d0198b8522b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "jcs-elpa",
+        "repo": "ts-fold",
         "type": "github"
       }
     },
