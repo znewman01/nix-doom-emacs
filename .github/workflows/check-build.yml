@@ -16,7 +16,9 @@ jobs:
           fetch-depth: 0
     - uses: cachix/install-nix-action@v17
       with:
-        name: nix-community
+        extra_nix_config: |
+          extra-substituters = https://nix-community.cachix.org
+          extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=
     - name: Retrieve /nix/store archive
       uses: actions/cache@v3
       id: cache-nix-store
