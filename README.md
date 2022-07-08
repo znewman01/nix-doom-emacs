@@ -18,7 +18,7 @@ compatible with the `doom-emacs` requirements.
 
 ## Getting started
 
-Using [home-manager](https://github.com/rycee/home-manager):
+Using [home-manager](https://github.com/nix-community/home-manager):
 
 ``` nix
 { pkgs, ... }:
@@ -44,7 +44,7 @@ Using `flake.nix`:
 ``` nix
 {
   inputs = {
-    home-manager.url = "github:rycee/home-manager";
+    home-manager.url = "github:nix-community/home-manager";
     nix-doom-emacs.url = "github:nix-community/nix-doom-emacs";
   };
 
