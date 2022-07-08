@@ -8,10 +8,6 @@ self: super: {
     buildPhase = ":";
   } // args);
 
-  evil-escape = super.evil-escape.overrideAttrs (esuper: {
-    patches = [ ./patches/evil-escape.patch ];
-  });
-
   doom-snippets = self.straightBuild {
     pname = "doom-snippets";
     postInstall = ''
