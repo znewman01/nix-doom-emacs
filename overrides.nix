@@ -8,10 +8,6 @@ self: super: {
     buildPhase = ":";
   } // args);
 
-  evil-escape = super.evil-escape.overrideAttrs (esuper: {
-    patches = [ ./evil-escape.patch ];
-  });
-
   doom-snippets = self.straightBuild {
     pname = "doom-snippets";
     postInstall = ''
@@ -80,7 +76,7 @@ self: super: {
   };
 
   restart-emacs = super.restart-emacs.overrideAttrs (esuper: {
-    patches = [ ./restart-emacs.patch ];
+    patches = [ ./patches/restart-emacs.patch ];
   });
 
   revealjs = self.straightBuild {

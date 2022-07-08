@@ -63,7 +63,14 @@ assert (lib.assertMsg ((builtins.isPath doomPrivateDir)
   "doomPrivateDir must be either a path, a derivation or a stringified store path");
 
 let
-  flake = import ./flake-compat-helper.nix { src = ./.; };
+  flake =
+    (import
+      (let lock = with builtins; fromJSON (readFile ./flake.lock); in
+       builtins.fetchTarball {
+         url = "https://github.com/edolstra/flake-compat/archive/${lock.nodes.flake-compat.locked.rev}.tar.gz";
+         sha256 = lock.nodes.flake-compat.locked.narHash;
+       })
+      { src = ./.; }).defaultNix;
   lock = p:
     if dependencyOverrides ? ${p} then
       dependencyOverrides.${p}
@@ -81,7 +88,7 @@ let
     phases = [ "unpackPhase" "patchPhase" "installPhase" ];
     patches = [
       (substituteAll {
-        src = ./fix-paths.patch;
+        src = ./patches/fix-paths.patch;
         private = builtins.toString doomPrivateDir;
       })
     ];
@@ -169,7 +176,7 @@ let
 
     patches = [
       (substituteAll {
-        src = ./nix-integration.patch;
+        src = ./patches/nix-integration.patch;
         local = doomLocal;
       })
     ];
