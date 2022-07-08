@@ -24,7 +24,7 @@ jobs:
       id: cache-nix-store
       with:
         path: nix-store.dump
-        key: nix-store-${{ hashFiles('flake.*') }}
+        key: nix-store-${{ hashFiles('flake.lock') }}
         restore-keys: |
           nix-store-
     - name: Import /nix/store contents
@@ -58,7 +58,7 @@ jobs:
       id: cache-nix-store
       with:
         path: nix-store.dump
-        key: nix-store-${{ hashFiles('flake.*') }}
+        key: nix-store-${{ hashFiles('flake.lock') }}
         restore-keys: |
           nix-store-
     - name: Import /nix/store contents
@@ -87,7 +87,7 @@ jobs:
       id: cache-nix-store-emacsGit
       with:
         path: nix-store.dump
-        key: nix-store-emacsGit-${{ hashFiles('flake.*') }}
+        key: nix-store-emacsGit-${{ hashFiles('flake.lock') }}
         restore-keys: |
           nix-store-emacsGit-
     - name: Import /nix/store contents
