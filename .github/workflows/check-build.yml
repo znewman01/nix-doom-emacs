@@ -71,6 +71,10 @@ jobs:
     - name: Run checks in Home-Manager module
       run: |
         nix build .#checks.x86_64-linux.home-manager-module
+    - name: Export /nix/store contents
+      if: ${{ !steps.cache-nix-store.outputs.cache-hit }}
+      run: |
+        nix-store --export $(nix-store -qR /nix/store/*-doom-emacs) > nix-store.dump
   check-emacsGit:
     name: Flake Check emacsGit (x86_64 only)
     runs-on: ubuntu-latest
