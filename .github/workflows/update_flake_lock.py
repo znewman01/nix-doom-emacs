@@ -53,7 +53,7 @@ class FlakeLock:
 
 
 def nix_flake_update(repo, flake_input):
-    check_call(["nix", "flake", "update", "--update-input", flake_input], cwd=repo)
+    check_call(["nix", "flake", "lock", "--update-input", flake_input], cwd=repo)
 
 
 def format_change(change: GitCommit, repo):
