@@ -103,6 +103,13 @@ self: super: {
     ename = "so-long";
   };
 
+  tree-sitter = super.tree-sitter.overrideAttrs (esuper: {
+    postInstall = ''
+      ln -s ${super.tsc}/share/emacs/site-lisp/elpa/${super.tsc.name}/* \
+        $out/share/emacs/site-lisp/elpa/${esuper.pname}-${esuper.version}/
+    '';
+  });
+
   ts-fold = self.straightBuild {
     pname = "ts-fold";
   };
