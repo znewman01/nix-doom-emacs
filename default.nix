@@ -251,10 +251,10 @@ in emacs.overrideAttrs (esuper:
     cmd = ''
       wrapEmacs() {
           local -a wrapArgs=(
-              --set DOOMDIR ${doomDir}
               --set NIX_DOOM_EMACS_BINARY $1
-              --set __DEBUG_doom_emacs_DIR ${doom-emacs}
-              --set __DEBUG_doomLocal_DIR ${doomLocal}
+              --set-default DOOMDIR ${doomDir}
+              --set-default __DEBUG_doom_emacs_DIR ${doom-emacs}
+              --set-default __DEBUG_doomLocal_DIR ${doomLocal}
           )
           ${initDirArgs}
 
