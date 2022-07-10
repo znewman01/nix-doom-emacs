@@ -9,6 +9,8 @@ let
     # this means we need to import the overlay in a hack-ish way
     overlays = [ (import emacs-overlay) ];
   };
+  # we are cloning HM here for the same reason as above, to avoid
+  # an extra additional input to be added to flake
   home-manager = pkgs.fetchFromGitHub {
     owner = "nix-community";
     repo = "home-manager";
