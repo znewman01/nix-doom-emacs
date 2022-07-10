@@ -1,13 +1,13 @@
 { # The files would be going to ~/.config/doom (~/.doom.d)
   doomPrivateDir
-/* Extra packages to install
+  /* Extra packages to install
 
-   Useful for non-emacs packages containing emacs bindings (e.g.
-   mu4e).
+     Useful for non-emacs packages containing emacs bindings (e.g.
+     mu4e).
 
-   Example:
-     extraPackages = epkgs: [ pkgs.mu ];
-*/
+     Example:
+       extraPackages = epkgs: [ pkgs.mu ];
+  */
 , extraPackages ? epkgs: [ ]
   /* Extra configuration to source during initialization
 
@@ -24,17 +24,17 @@
      Only used to get emacs package, if `bundledPackages` is set.
   */
 , emacsPackages
-/* Overlay to customize emacs (elisp) dependencies
+  /* Overlay to customize emacs (elisp) dependencies
 
-   See overrides.nix for addition examples.
+     See overrides.nix for addition examples.
 
-   Example:
-     emacsPackagesOverlay = self: super: {
-       magit-delta = super.magit-delta.overrideAttrs (esuper: {
-         buildInputs = esuper.buildInputs ++ [ pkgs.git ];
-       });
-     };
-*/
+     Example:
+       emacsPackagesOverlay = self: super: {
+         magit-delta = super.magit-delta.overrideAttrs (esuper: {
+           buildInputs = esuper.buildInputs ++ [ pkgs.git ];
+         });
+       };
+  */
 , emacsPackagesOverlay ? self: super: { }
   /* Use bundled revision of github.com/nix-community/emacs-overlay
      as `emacsPackages`.
