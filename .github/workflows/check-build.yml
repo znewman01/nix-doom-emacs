@@ -24,7 +24,7 @@ jobs:
       id: cache-nix-store
       with:
         path: nix-store.dump
-        key: nix-store-${{ hashFiles('flake.*') }}
+        key: nix-store-${{ hashFiles('flake.lock') }}
         restore-keys: |
           nix-store-
     - name: Import /nix/store contents
@@ -37,6 +37,40 @@ jobs:
     - name: Run checks in emacs
       run: |
         nix build .#checks.x86_64-linux.init-example-el
+    - name: Export /nix/store contents
+      if: ${{ !steps.cache-nix-store.outputs.cache-hit }}
+      run: |
+        nix-store --export $(nix-store -qR /nix/store/*-doom-emacs) > nix-store.dump
+  check-home-manager:
+    name: Home-Manager module (x86_64 only)
+    needs: check-emacs
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+          # Nix Flakes doesn't work on shallow clones
+          fetch-depth: 0
+    - uses: cachix/install-nix-action@v17
+      with:
+        name: nix-community
+    - name: Retrieve /nix/store archive
+      uses: actions/cache@v3
+      id: cache-nix-store
+      with:
+        path: nix-store.dump
+        key: nix-store-${{ hashFiles('flake.lock') }}
+        restore-keys: |
+          nix-store-
+    - name: Import /nix/store contents
+      if: ${{ steps.cache-nix-store.outputs.cache-hit }}
+      run: |
+        if [[ -f nix-store.dump ]]; then
+          nix-store --import < nix-store.dump || true
+          rm nix-store.dump
+        fi
+    - name: Run checks in Home-Manager module
+      run: |
+        nix build .#checks.x86_64-linux.home-manager-module
     - name: Export /nix/store contents
       if: ${{ !steps.cache-nix-store.outputs.cache-hit }}
       run: |
@@ -57,7 +91,7 @@ jobs:
       id: cache-nix-store-emacsGit
       with:
         path: nix-store.dump
-        key: nix-store-emacsGit-${{ hashFiles('flake.*') }}
+        key: nix-store-emacsGit-${{ hashFiles('flake.lock') }}
         restore-keys: |
           nix-store-emacsGit-
     - name: Import /nix/store contents
