@@ -1,18 +1,19 @@
-From aa6b52ddbf17b9abc4ad9f30f3d430445b2b6923 Mon Sep 17 00:00:00 2001
-From: ckie <git-525ff67@ckie.dev>
-Date: Fri, 1 Jul 2022 18:34:52 +0300
+From 612ce4127568020cd482ff119616a74cf1c1c29e Mon Sep 17 00:00:00 2001
+From: Thiago Kenji Okada <thiagokokada@gmail.com>
+Date: Fri, 29 Jul 2022 10:32:00 +0100
 Subject: [PATCH] Nix integration
 
 ---
  core/core-cli-lib.el |  2 +-
- core/core.el         | 18 ++++++------------
- 2 files changed, 7 insertions(+), 13 deletions(-)
+ core/core.el         | 18 +++++----------
+ early-init.el        | 55 +-------------------------------------------
+ 3 files changed, 8 insertions(+), 67 deletions(-)
 
 diff --git a/core/core-cli-lib.el b/core/core-cli-lib.el
-index 5881bb564..8d5a9381d 100644
+index 158254ff7..bd7adccb5 100644
 --- a/core/core-cli-lib.el
 +++ b/core/core-cli-lib.el
-@@ -111,7 +111,7 @@ If nil, falls back to less.")
+@@ -116,7 +116,7 @@ If nil, falls back to less.")
  
  Only applies if (exit! :pager) or (exit! :pager?) are called.")
  
@@ -22,37 +23,10 @@ index 5881bb564..8d5a9381d 100644
  
  Must have two arguments, one for session id and the other for log type.")
 diff --git a/core/core.el b/core/core.el
-index 07254e602..23d26843a 100644
+index 15df30f35..1ca3011e6 100644
 --- a/core/core.el
 +++ b/core/core.el
-@@ -143,7 +143,7 @@ envvar will enable this at startup.")
- (defconst doom-local-dir
-   (if-let (localdir (getenv-internal "DOOMLOCALDIR"))
-       (expand-file-name (file-name-as-directory localdir))
--    (concat doom-emacs-dir ".local/"))
-+    "@local@/")
-   "Root directory for local storage.
- 
- Use this as a storage location for this system's installation of Doom Emacs.
-@@ -152,14 +152,15 @@ These files should not be shared across systems. By default, it is used by
- `doom-etc-dir' and `doom-cache-dir'. Must end with a slash.")
- 
- ;; DEPRECATED
--(defconst doom-etc-dir (concat doom-local-dir "etc/")
-+; nix-doom-emacs: This doesn't meet XDG but backwards compatibility is a thing.
-+(defconst doom-etc-dir "~/.local/doom"
-   "Directory for non-volatile local storage.
- 
- Use this for files that don't change much, like server binaries, external
- dependencies or long-term shared data. Must end with a slash.")
- 
- ;; DEPRECATED
--(defconst doom-cache-dir (concat doom-local-dir "cache/")
-+(defconst doom-cache-dir "~/.cache/doom"
-   "Directory for volatile local storage.
- 
- Use this for files that change often, like cache files. Must end with a slash.")
-@@ -167,15 +168,7 @@ Use this for files that change often, like cache files. Must end with a slash.")
+@@ -131,15 +131,7 @@
  (defconst doom-docs-dir (concat doom-emacs-dir "docs/")
    "Where Doom's documentation files are stored. Must end with a slash.")
  
@@ -69,7 +43,38 @@ index 07254e602..23d26843a 100644
    "Where your private configuration is placed.
  
  Defaults to ~/.config/doom, ~/.doom.d or the value of the DOOMDIR envvar;
-@@ -238,6 +231,7 @@ users).")
+@@ -208,7 +200,7 @@ downloaded/installed by packages. Must end in a slash.")
+       (expand-file-name (file-name-as-directory localdir))
+     (if doom-profile
+         doom-profile-dir
+-      (expand-file-name ".local/" doom-emacs-dir)))
++      "@local@/"))
+   "Root directory for local storage.
+ 
+ Use this as a storage location for this system's installation of Doom Emacs.
+@@ -216,10 +208,11 @@ Use this as a storage location for this system's installation of Doom Emacs.
+ These files should not be shared across systems. By default, it is used by
+ `doom-etc-dir' and `doom-cache-dir'. Must end with a slash.")
+ 
++; nix-doom-emacs: This doesn't meet XDG but backwards compatibility is a thing.
+ (defconst doom-etc-dir
+   (if doom-profile
+       doom-profile-data-dir
+-    (concat doom-local-dir "etc/"))
++    "~/.local/doom")
+   "Directory for non-volatile local storage.
+ 
+ Use this for files that don't change much, like server binaries, external
+@@ -228,7 +221,7 @@ dependencies or long-term shared data. Must end with a slash.")
+ (defconst doom-cache-dir
+   (if doom-profile
+       doom-profile-cache-dir
+-    (concat doom-local-dir "cache/"))
++    "~/.cache/doom")
+   "Directory for volatile local storage.
+ 
+ Use this for files that change often, like cache files. Must end with a slash.")
+@@ -294,6 +287,7 @@ users).")
    ;; Don't store eln files in ~/.emacs.d/eln-cache (where they can easily be
    ;; deleted by 'doom upgrade').
    (add-to-list 'native-comp-eln-load-path (concat doom-cache-dir "eln/"))
@@ -77,6 +82,72 @@ index 07254e602..23d26843a 100644
  
    (with-eval-after-load 'comp
      ;; HACK Disable native-compilation for some troublesome packages
+diff --git a/early-init.el b/early-init.el
+index 19ff8a768..088125cda 100644
+--- a/early-init.el
++++ b/early-init.el
+@@ -73,60 +73,7 @@
+ ;;
+ ;;; Detect `user-emacs-directory'
+ 
+-;; Prevent recursive profile processing, in case you're loading a Doom profile.
+-(unless (boundp 'doom-version)
+-  ;; Not using `command-switch-alist' to process --profile and --init-directory
+-  ;; was intentional. `command-switch-alist' is processed too late at startup to
+-  ;; change `user-emacs-directory' in time.
+-
+-  ;; DEPRECATED Backported from 29. Remove this when 27/28 support is removed.
+-  (let ((initdir (or (cadr (member "--init-directory" command-line-args))
+-                     (getenv-internal "EMACSDIR"))))
+-    (when initdir
+-      ;; Discard the switch to prevent "invalid option" errors later.
+-      (add-to-list 'command-switch-alist (cons "--init-directory" (lambda (_) (pop argv))))
+-      (setq user-emacs-directory initdir)))
+-
+-  (let ((profile (or (cadr (member "--profile" command-line-args))
+-                     (getenv-internal "DOOMPROFILE"))))
+-    (when profile
+-      ;; Discard the switch to prevent "invalid option" errors later.
+-      (add-to-list 'command-switch-alist (cons "--profile" (lambda (_) (pop argv))))
+-      ;; While processing the requested profile, Doom loosely expects
+-      ;; `user-emacs-directory' to be changed. If it doesn't, then you're using
+-      ;; profiles.el as a glorified, runtime dir-locals.el (which is fine, if
+-      ;; intended).
+-      (catch 'found
+-        (let ((profiles-file (expand-file-name "profiles.el" user-emacs-directory)))
+-          (when (file-exists-p profiles-file)
+-            (with-temp-buffer
+-              (let ((coding-system-for-read 'utf-8-auto))
+-                (insert-file-contents profiles-file))
+-              (condition-case-unless-debug e
+-                  (let ((profile-data (cdr (assq (intern profile) (read (current-buffer))))))
+-                    (dolist (var profile-data (if profile-data (throw 'found t)))
+-                      (if (eq (car var) 'env)
+-                          (dolist (env (cdr var)) (setenv (car env) (cdr env)))
+-                        (set (car var) (cdr var)))))
+-                (error (error "Failed to parse profiles.el: %s" (error-message-string e))))))
+-          ;; If the requested profile isn't in profiles.el, then see if
+-          ;; $EMACSDIR/profiles/$DOOMPROFILE exists. These are implicit
+-          ;; profiles, where `emacs --profile foo` will be equivalent to `emacs
+-          ;; --init-directory $EMACSDIR/profile/foo', if that directory exists.
+-          (let ((profile-dir
+-                 (expand-file-name
+-                  profile (or (getenv-internal "DOOMPROFILESDIR")
+-                              (expand-file-name "profiles/" user-emacs-directory)))))
+-            (when (file-directory-p profile-dir)
+-              (setq user-emacs-directory profile-dir)
+-              (throw 'found t)))
+-
+-          (user-error "No %S profile found" profile)))
+-
+-      (when init-file-debug
+-        (message "Selected profile: %s" profile))
+-      ;; Ensure the selected profile persists through the session
+-      (setenv "DOOMPROFILE" profile))))
++(setq user-emacs-directory (file-name-directory load-file-name))
+ 
+ 
+ ;;
 -- 
-2.36.1
+2.36.0
 
