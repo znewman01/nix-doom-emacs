@@ -1,10 +1,20 @@
-diff --git a/core/autoload/config.el b/core/autoload/config.el
-index 1e643cf49..501cbfba4 100644
---- a/core/autoload/config.el
-+++ b/core/autoload/config.el
-@@ -23,7 +23,7 @@
+From fd75a170a515e35dcbb10b96a484ad1eb9a1a3f0 Mon Sep 17 00:00:00 2001
+From: Thiago Kenji Okada <thiagokokada@gmail.com>
+Date: Fri, 5 Aug 2022 22:45:00 +0100
+Subject: [PATCH] Fix paths
+
+---
+ lisp/lib/config.el        | 2 +-
+ modules/app/rss/config.el | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/lisp/lib/config.el b/lisp/lib/config.el
+index 92532c0f5..34c6f9156 100644
+--- a/lisp/lib/config.el
++++ b/lisp/lib/config.el
+@@ -19,7 +19,7 @@
  (defun doom/find-file-in-private-config ()
-   "Search for a file in `doom-private-dir' inside nixos-config."
+   "Search for a file in `doom-private-dir'."
    (interactive)
 -  (doom-project-find-file doom-private-dir))
 +  (doom-project-find-file "@private@"))
@@ -12,10 +22,10 @@ index 1e643cf49..501cbfba4 100644
  ;;;###autoload
  (defun doom/goto-private-init-file ()
 diff --git a/modules/app/rss/config.el b/modules/app/rss/config.el
-index c5657eec8..34f303420 100644
+index a8078d18f..075a5c8a7 100644
 --- a/modules/app/rss/config.el
 +++ b/modules/app/rss/config.el
-@@ -18,8 +18,8 @@ easier to scroll through.")
+@@ -20,8 +20,8 @@ easier to scroll through.")
  (use-package! elfeed
    :commands elfeed
    :init
@@ -26,3 +36,6 @@ index c5657eec8..34f303420 100644
    :config
    (setq elfeed-search-filter "@2-week-ago "
          elfeed-show-entry-switch #'pop-to-buffer
+-- 
+2.36.0
+
