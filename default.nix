@@ -87,10 +87,7 @@ let
     src = lock "doom-emacs";
     phases = [ "unpackPhase" "patchPhase" "installPhase" ];
     patches = [
-      (substituteAll {
-        src = ./patches/fix-paths.patch;
-        private = builtins.toString doomPrivateDir;
-      })
+      ./patches/fix-paths.patch
     ];
     installPhase = ''
       mkdir -p $out

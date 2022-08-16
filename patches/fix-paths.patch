@@ -1,28 +1,14 @@
-From fd75a170a515e35dcbb10b96a484ad1eb9a1a3f0 Mon Sep 17 00:00:00 2001
+From a0cda2c37c6358956ad737e227ae9bd26cdf3d35 Mon Sep 17 00:00:00 2001
 From: Thiago Kenji Okada <thiagokokada@gmail.com>
-Date: Fri, 5 Aug 2022 22:45:00 +0100
-Subject: [PATCH] Fix paths
+Date: Tue, 16 Aug 2022 17:21:16 +0100
+Subject: [PATCH 2/2] Fix paths
 
 ---
- lisp/lib/config.el        | 2 +-
  modules/app/rss/config.el | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/lisp/lib/config.el b/lisp/lib/config.el
-index 92532c0f5..34c6f9156 100644
---- a/lisp/lib/config.el
-+++ b/lisp/lib/config.el
-@@ -19,7 +19,7 @@
- (defun doom/find-file-in-private-config ()
-   "Search for a file in `doom-private-dir'."
-   (interactive)
--  (doom-project-find-file doom-private-dir))
-+  (doom-project-find-file "@private@"))
- 
- ;;;###autoload
- (defun doom/goto-private-init-file ()
 diff --git a/modules/app/rss/config.el b/modules/app/rss/config.el
-index a8078d18f..075a5c8a7 100644
+index a292f4006..fe3dbfa29 100644
 --- a/modules/app/rss/config.el
 +++ b/modules/app/rss/config.el
 @@ -20,8 +20,8 @@ easier to scroll through.")
@@ -37,5 +23,5 @@ index a8078d18f..075a5c8a7 100644
    (setq elfeed-search-filter "@2-week-ago "
          elfeed-show-entry-switch #'pop-to-buffer
 -- 
-2.36.0
+2.37.1
 
