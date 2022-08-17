@@ -1,4 +1,4 @@
-From a0cda2c37c6358956ad737e227ae9bd26cdf3d35 Mon Sep 17 00:00:00 2001
+From 8e6933c5cf2d512fef9ef72cc21d50ed5875ea9d Mon Sep 17 00:00:00 2001
 From: Thiago Kenji Okada <thiagokokada@gmail.com>
 Date: Tue, 16 Aug 2022 17:21:16 +0100
 Subject: [PATCH 2/2] Fix paths
