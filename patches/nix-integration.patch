@@ -1,23 +1,21 @@
-From 4a98147cd1c74398347900312d9a9b8766c7b632 Mon Sep 17 00:00:00 2001
+From cab39bdbf3d380c3157575f8c98655037a5a8d5f Mon Sep 17 00:00:00 2001
 From: Thiago Kenji Okada <thiagokokada@gmail.com>
-Date: Fri, 29 Jul 2022 10:32:00 +0100
-Subject: [PATCH] Nix integration
+Date: Tue, 16 Aug 2022 17:21:05 +0100
+Subject: [PATCH 1/2] Nix integration
 
 ---
- early-init.el        | 55 +-------------------------------------------
- lisp/doom-cli-lib.el |  2 +-
- lisp/doom.el         | 18 +++++----------
- 3 files changed, 8 insertions(+), 67 deletions(-)
+ early-init.el | 54 +--------------------------------------------------
+ lisp/doom.el  | 10 ++++++----
+ 2 files changed, 7 insertions(+), 57 deletions(-)
 
 diff --git a/early-init.el b/early-init.el
-index 4335f8db1..c6c29cdd5 100644
+index 4335f8db1..78d2817c1 100644
 --- a/early-init.el
 +++ b/early-init.el
-@@ -73,60 +73,7 @@
- ;;
+@@ -74,59 +74,7 @@
  ;;; Detect `user-emacs-directory'
  
--;; Prevent recursive profile processing, in case you're loading a Doom profile.
+ ;; Prevent recursive profile processing, in case you're loading a Doom profile.
 -(unless (boundp 'doom-version)
 -  ;; Not using `command-switch-alist' to process --profile and --init-directory
 -  ;; was intentional. `command-switch-alist' is processed too late at startup to
@@ -75,41 +73,11 @@ index 4335f8db1..c6c29cdd5 100644
  
  
  ;;
-diff --git a/lisp/doom-cli-lib.el b/lisp/doom-cli-lib.el
-index 309a1fa88..97129d7c0 100644
---- a/lisp/doom-cli-lib.el
-+++ b/lisp/doom-cli-lib.el
-@@ -116,7 +116,7 @@ If nil, falls back to less.")
- 
- Only applies if (exit! :pager) or (exit! :pager?) are called.")
- 
--(defvar doom-cli-log-file-format (expand-file-name "logs/cli.%s.%s.%s" doom-local-dir)
-+(defvar doom-cli-log-file-format (expand-file-name "logs/cli.%s.%s.%s" doom-cache-dir)
-   "Where to write any output/log file to.
- 
- Must have two arguments, one for session id and the other for log type.")
 diff --git a/lisp/doom.el b/lisp/doom.el
-index 981190612..26baf8b33 100644
+index 6dbbefb5e..6116445f3 100644
 --- a/lisp/doom.el
 +++ b/lisp/doom.el
-@@ -132,15 +132,7 @@
- (defconst doom-docs-dir (concat doom-emacs-dir "docs/")
-   "Where Doom's documentation files are stored. Must end with a slash.")
- 
--(defconst doom-private-dir
--  (if-let (doomdir (getenv-internal "DOOMDIR"))
--      (expand-file-name (file-name-as-directory doomdir))
--    (or (let ((xdgdir
--               (expand-file-name "doom/"
--                                 (or (getenv-internal "XDG_CONFIG_HOME")
--                                     "~/.config"))))
--          (if (file-directory-p xdgdir) xdgdir))
--        "~/.doom.d/"))
-+(defconst doom-private-dir (expand-file-name (file-name-as-directory (getenv-internal "DOOMDIR")))
-   "Where your private configuration is placed.
- 
- Defaults to ~/.config/doom, ~/.doom.d or the value of the DOOMDIR envvar;
-@@ -209,7 +201,7 @@ downloaded/installed by packages. Must end in a slash.")
+@@ -221,7 +221,7 @@ downloaded/installed by packages. Must end in a slash.")
        (expand-file-name (file-name-as-directory localdir))
      (if doom-profile
          doom-profile-dir
@@ -118,12 +86,12 @@ index 981190612..26baf8b33 100644
    "Root directory for local storage.
  
  Use this as a storage location for this system's installation of Doom Emacs.
-@@ -217,10 +209,11 @@ Use this as a storage location for this system's installation of Doom Emacs.
+@@ -229,10 +229,11 @@ Use this as a storage location for this system's installation of Doom Emacs.
  These files should not be shared across systems. By default, it is used by
- `doom-etc-dir' and `doom-cache-dir'. Must end with a slash.")
+ `doom-data-dir' and `doom-cache-dir'. Must end with a slash.")
  
 +; nix-doom-emacs: This doesn't meet XDG but backwards compatibility is a thing.
- (defconst doom-etc-dir
+ (defconst doom-data-dir
    (if doom-profile
        doom-profile-data-dir
 -    (concat doom-local-dir "etc/"))
@@ -131,7 +99,7 @@ index 981190612..26baf8b33 100644
    "Directory for non-volatile local storage.
  
  Use this for files that don't change much, like server binaries, external
-@@ -229,7 +222,7 @@ dependencies or long-term shared data. Must end with a slash.")
+@@ -241,7 +242,7 @@ dependencies or long-term shared data. Must end with a slash.")
  (defconst doom-cache-dir
    (if doom-profile
        doom-profile-cache-dir
@@ -140,14 +108,16 @@ index 981190612..26baf8b33 100644
    "Directory for volatile local storage.
  
  Use this for files that change often, like cache files. Must end with a slash.")
-@@ -295,6 +288,7 @@ users).")
+@@ -319,7 +320,8 @@ users).")
    ;; Don't store eln files in ~/.emacs.d/eln-cache (where they can easily be
    ;; deleted by 'doom upgrade').
-   (add-to-list 'native-comp-eln-load-path (concat doom-cache-dir "eln/"))
-+  (add-to-list 'native-comp-eln-load-path (concat doom-cache-dir "cache/eln/"))
+   ;; REVIEW Use `startup-redirect-eln-cache' when 28 support is dropped
+-  (add-to-list 'native-comp-eln-load-path (expand-file-name "eln/" doom-cache-dir)))
++  (add-to-list 'native-comp-eln-load-path (expand-file-name "eln/" doom-cache-dir))
++  (add-to-list 'native-comp-eln-load-path (expand-file-name "cache/eln/" doom-cache-dir)))
  
-   (with-eval-after-load 'comp
-     ;; HACK Disable native-compilation for some troublesome packages
+ 
+ ;;
 -- 
-2.36.0
+2.37.1
 
