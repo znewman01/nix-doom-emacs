@@ -251,6 +251,7 @@ in emacs.overrideAttrs (esuper:
           local -a wrapArgs=(
               --set NIX_DOOM_EMACS_BINARY $1
               --set-default DOOMDIR ${doomDir}
+              --set-default DOOMLOCALDIR ${doomLocal}
               --set-default __DEBUG_doom_emacs_DIR ${doom-emacs}
               --set-default __DEBUG_doomLocal_DIR ${doomLocal}
           )
