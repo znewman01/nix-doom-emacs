@@ -11,10 +11,8 @@ let
   };
   # we are cloning HM here for the same reason as above, to avoid
   # an extra additional input to be added to flake
-  home-manager = pkgs.fetchFromGitHub {
-    owner = "nix-community";
-    repo = "home-manager";
-    rev = "8160b3b45b8457d58d2b3af2aeb2eb6f47042e0f";
+  home-manager = builtins.fetchTarball {
+    url = "https://github.com/nix-community/home-manager/tarball/8160b3b45b8457d58d2b3af2aeb2eb6f47042e0f";
     sha256 = "sha256-/aN3p2LaRNVXf7w92GWgXq9H5f23YRQPOvsm3BrBqzU=";
   };
 in
