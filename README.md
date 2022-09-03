@@ -129,7 +129,7 @@ referenced at the top of your config file.
 {
   services.emacs = {
     enable = true;
-    package = doom-emacs; # Not needed if you're using Home-Manager module instead
+    package = doom-emacs; # Not needed if you're using the Home-Manager module instead
   };
 }
 ```
