@@ -4,6 +4,7 @@
 | --- | --- |
 | Build on `master` | [![Build Status on master](https://github.com/nix-community/nix-doom-emacs/workflows/Check%20Build/badge.svg?branch=master&event=push)](https://github.com/nix-community/nix-doom-emacs/actions/workflows/check-build.yml?query=branch%3Amaster) |
 | Dependency updater | [![Dependency Updater Status](https://github.com/nix-community/nix-doom-emacs/workflows/Update%20Dependencies/badge.svg?branch=master)](https://github.com/nix-community/nix-doom-emacs/actions/workflows/update-dependencies.yml?query=branch%3Amaster) |
+| Matrix Chat | [![Matrix Chat](https://img.shields.io/static/v1?label=chat&message=doom-emacs&color=brightgreen&logo=matrix)](https://matrix.to/#/#doom-emacs:nixos.org) |
 
 Nix expression to install and configure
 [doom-emacs](https://github.com/doomemacs/doomemacs).
@@ -128,7 +129,7 @@ referenced at the top of your config file.
 {
   services.emacs = {
     enable = true;
-    package = doom-emacs;  # use programs.emacs.package instead if using home-manager
+    package = doom-emacs; # Not needed if you're using the Home-Manager module instead
   };
 }
 ```
