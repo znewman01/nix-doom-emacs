@@ -65,10 +65,10 @@ in
         package customization.
       '';
       type = with types; overlayType;
-      default = self: super: { };
-      defaultText = "self: super { }";
+      default = final: prev: { };
+      defaultText = "final: prev: { }";
       example = literalExample ''
-        self: super: {
+        final: prev: {
           magit-delta = super.magit-delta.overrideAttrs (esuper: {
             buildInputs = esuper.buildInputs ++ [ pkgs.git ];
           });
