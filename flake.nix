@@ -93,9 +93,9 @@
       let pkgs = import nixpkgs { inherit system; };
       in {
         apps = {
-          default = self.outputs.apps.${system}.nix-doom-emacs;
-          nix-doom-emacs = flake-utils.lib.mkApp {
-            drv = self.outputs.packages.${system}.nix-doom-emacs;
+          default = self.outputs.apps.${system}.doom-emacs;
+          doom-emacs = flake-utils.lib.mkApp {
+            drv = self.outputs.packages.${system}.doom-emacs;
             exePath = "/bin/emacs";
           };
         };
@@ -111,8 +111,8 @@
           (pkgs.callPackage self args);
 
         packages = {
-          default = self.outputs.packages.${system}.nix-doom-emacs;
-          nix-doom-emacs = pkgs.callPackage self {
+          default = self.outputs.packages.${system}.doom-emacs;
+          doom-emacs = pkgs.callPackage self {
             doomPrivateDir = ./test/doom.d;
           };
         };

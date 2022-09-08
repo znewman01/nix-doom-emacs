@@ -32,8 +32,8 @@ in
       };
     };
   }).activationPackage;
-  init-example-el = self.outputs.packages.${system}.nix-doom-emacs;
-  init-example-el-emacsGit = self.outputs.packages.${system}.nix-doom-emacs.override {
+  init-example-el = self.outputs.packages.${system}.doom-emacs;
+  init-example-el-emacsGit = self.outputs.packages.${system}.doom-emacs.override {
     emacsPackages = with pkgs; emacsPackagesFor emacsGit;
   };
 }
