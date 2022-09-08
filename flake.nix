@@ -92,14 +92,24 @@
     in eachDefaultSystem (system:
       let pkgs = import nixpkgs { inherit system; };
       in {
+        apps = {
+          default = self.outputs.apps.${system}.nix-doom-emacs;
+          nix-doom-emacs = flake-utils.lib.mkApp {
+            drv = self.outputs.packages.${system}.nix-doom-emacs;
+            exePath = "/bin/emacs";
+          };
+        };
+
         devShells.default = pkgs.mkShell {
           buildInputs =
             [ (pkgs.python3.withPackages (ps: with ps; [ PyGithub ])) ];
         };
+
         # TODO: remove this after NixOS 23.05 is released
         package = { ... }@args:
           pkgs.lib.warn "Deprecated, please use `packages.${system}.default` instead!"
           (pkgs.callPackage self args);
+
         packages = {
           default = self.outputs.packages.${system}.nix-doom-emacs;
           nix-doom-emacs = pkgs.callPackage self {
