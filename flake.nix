@@ -2,8 +2,8 @@
 
    {
      inputs = {
-       home-manager.url = "github:rycee/home-manager";
-       nix-doom-emacs.url = "github:nix-community/nix-doom-emacs/flake";
+       home-manager.url = "github:nix-community/home-manager";
+       nix-doom-emacs.url = "github:nix-community/nix-doom-emacs";
      };
 
      outputs = {
@@ -92,13 +92,20 @@
     in eachDefaultSystem (system:
       let pkgs = import nixpkgs { inherit system; };
       in {
-        devShell = pkgs.mkShell {
+        devShells.default = pkgs.mkShell {
           buildInputs =
             [ (pkgs.python3.withPackages (ps: with ps; [ PyGithub ])) ];
         };
-        package = { dependencyOverrides ? { }, ... }@args:
-          pkgs.callPackage self
-          (args // { dependencyOverrides = (inputs // dependencyOverrides); });
+        # TODO: remove this after NixOS 23.05 is released
+        package = { ... }@args:
+          pkgs.lib.warn "Deprecated, please use `packages.${system}.default` instead!"
+          (pkgs.callPackage self args);
+        packages = {
+          default = self.outputs.packages.${system}.nix-doom-emacs;
+          nix-doom-emacs = pkgs.callPackage self {
+            doomPrivateDir = ./test/doom.d;
+          };
+        };
         checks = import ./checks.nix { inherit system; } inputs;
       }) // {
         hmModule = import ./modules/home-manager.nix inputs;

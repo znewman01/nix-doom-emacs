@@ -32,13 +32,8 @@ in
       };
     };
   }).activationPackage;
-  init-example-el = self.outputs.package.${system} {
-    doomPrivateDir = ./test/doom.d;
-    dependencyOverrides = inputs;
-  };
-  init-example-el-emacsGit = self.outputs.package.${system} {
-    doomPrivateDir = ./test/doom.d;
-    dependencyOverrides = inputs;
+  init-example-el = self.outputs.packages.${system}.nix-doom-emacs;
+  init-example-el-emacsGit = self.outputs.packages.${system}.nix-doom-emacs.override {
     emacsPackages = with pkgs; emacsPackagesFor emacsGit;
   };
 }
