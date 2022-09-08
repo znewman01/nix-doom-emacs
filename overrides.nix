@@ -11,7 +11,7 @@ self: super: {
   doom-snippets = self.straightBuild {
     pname = "doom-snippets";
     postInstall = ''
-       cp -r *-mode $out/share/emacs/site-lisp
+      cp -r *-mode $out/share/emacs/site-lisp
     '';
   };
 

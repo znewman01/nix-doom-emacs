@@ -65,8 +65,8 @@ in
         package customization.
       '';
       type = with types; overlayType;
-      default = self: super: {  };
-      defaultText = "self: super {  }";
+      default = self: super: { };
+      defaultText = "self: super { }";
       example = literalExample ''
         self: super: {
           magit-delta = super.magit-delta.overrideAttrs (esuper: {
