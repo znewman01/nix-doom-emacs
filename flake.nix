@@ -87,15 +87,15 @@
     flake-compat.flake = false;
   };
 
-  outputs = { self, nixpkgs, flake-utils, emacs-overlay, ... }@inputs:
-    let inherit (flake-utils.lib) eachDefaultSystem eachSystem;
+  outputs = { self, nixpkgs, flake-utils, ... }@inputs:
+    let inherit (flake-utils.lib) eachDefaultSystem mkApp;
     in eachDefaultSystem (system:
       let pkgs = import nixpkgs { inherit system; };
       in {
         apps = {
-          default = self.outputs.apps.${system}.doom-emacs;
-          doom-emacs = flake-utils.lib.mkApp {
-            drv = self.outputs.packages.${system}.doom-emacs;
+          default = self.outputs.apps.${system}.doom-emacs-example;
+          doom-emacs-example = mkApp {
+            drv = self.outputs.packages.${system}.doom-emacs-example;
             exePath = "/bin/emacs";
           };
         };
@@ -105,14 +105,16 @@
             [ (pkgs.python3.withPackages (ps: with ps; [ PyGithub ])) ];
         };
 
-        # TODO: remove this after NixOS 23.05 is released
         package = { ... }@args:
-          pkgs.lib.warn "Deprecated, please use `packages.${system}.default` instead!"
+          pkgs.lib.warn ''
+            Deprecated, will be removed after NixOS 23.05 release.
+            Please use `packages.${system}.default` instead!
+          ''
           (pkgs.callPackage self args);
 
         packages = {
-          default = self.outputs.packages.${system}.doom-emacs;
-          doom-emacs = pkgs.callPackage self {
+          default = self.outputs.packages.${system}.doom-emacs-example;
+          doom-emacs-example = pkgs.callPackage self {
             doomPrivateDir = ./test/doom.d;
           };
         };

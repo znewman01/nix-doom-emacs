@@ -2,6 +2,7 @@
 { self, nixpkgs, emacs-overlay, ... }@inputs:
 
 let
+  inherit (self.outputs.packages.${system}) doom-emacs-example;
   pkgs = import nixpkgs {
     inherit system;
     # we are not using emacs-overlay's flake.nix here,
@@ -32,8 +33,8 @@ in
       };
     };
   }).activationPackage;
-  init-example-el = self.outputs.packages.${system}.doom-emacs;
-  init-example-el-emacsGit = self.outputs.packages.${system}.doom-emacs.override {
+  init-example-el = doom-emacs-example;
+  init-example-el-emacsGit = doom-emacs-example.override {
     emacsPackages = with pkgs; emacsPackagesFor emacsGit;
   };
 }
