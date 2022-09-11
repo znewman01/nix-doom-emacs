@@ -107,8 +107,10 @@
 
         package = { ... }@args:
           pkgs.lib.warn ''
-            Deprecated, will be removed after NixOS 23.05 release.
-            Please use `packages.${system}.default` instead!
+            nix-doom-emacs no longer supports the deprecated `package` flake output.
+            It will be removed after the release of NixOS 23.05.
+
+            Please use `packages.${system}.default.override { ... }` instead!
           ''
           (pkgs.callPackage self args);
 
