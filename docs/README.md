@@ -148,7 +148,7 @@ This is the least recommended method. This uses the `devShell` (or `nix-shell` f
 
 ### Flake
 
-``` nix
+```nix
 {
   description = "nix-doom-emacs shell";
 
@@ -174,7 +174,7 @@ This is the least recommended method. This uses the `devShell` (or `nix-shell` f
 ```
 
 ### Non-Flake
-``` nix
+```nix
 { pkgs ? import <nixpkgs> { } }:
 
 let

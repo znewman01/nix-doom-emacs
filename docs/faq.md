@@ -130,6 +130,18 @@ For what it's worth, this will not be the last time you muddle around in the Nix
 
 You shouldn't do that. The only thing that Nix-Doom-Emacs writes in your $HOME is `~/.emacs.d/init.el`, which points to the Nix store. Make sure to remove them from your configuration, then reboot after rebuilding it. If for just the session, you can just `unset` those 2 variables.
 
-# Help! on MacOS, it says "Too many files open"!
+## Help! on MacOS, it says "Too many files open"!
 
 Running `ulimit -S -n 2048` will fix it for the duration of your shell session.
+
+## How do I use emacs-overlay's emacs with Nix-Doom-Emacs?
+
+This is very simple. you just use the `emacsPackage` attribute after applying `emacs-overlay` to your Nixpkgs. something like:
+
+```nix
+programs.doom-emacs = {
+  enable = true;
+  doomPrivateDir = ./doom;
+  emacsPackage = pkgs.emacsPgtkNativeComp; # I used the native comp pgtk as an example
+}
+```
