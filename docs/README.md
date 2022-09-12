@@ -1,16 +1,16 @@
-# Documentation for Nix-Doom-Emacs
+# Documentation for nix-doom-emacs
 
-Nix-Doom-Emacs (also commonly referred to as NDE in chatrooms) is a project with lots of moving pieces and hacks. Users are expected to know their way around using (and especially debugging) Nix and Emacs Lisp before using this project.
+nix-doom-emacs (also commonly referred to as NDE in chatrooms) is a project with lots of moving pieces and hacks. Users are expected to know their way around using (and especially debugging) Nix and Emacs Lisp before using this project.
 
-If you encounter any issues that make it unusable to you (or if you need support), please talk to us first in the [Matrix room](https://matrix.to/#/#doom-emacs:nixos.org) and if it's indeed a bug of Nix-Doom-Emacs, file it in the [issue tracker](https://github.com/nix-community/nix-doom-emacs/issues).
+If you encounter any issues that make it unusable to you (or if you need support), please talk to us first in the [Matrix room](https://matrix.to/#/#doom-emacs:nixos.org) and if it's indeed a bug of nix-doom-emacs, file it in the [issue tracker](https://github.com/nix-community/nix-doom-emacs/issues).
 
 If you find this documentation unclear or incomplete, please let us know as well.
 
 Here's the [FAQ](./faq.md)
 
-Nix-Doom-Emacs uses [`nix-straight.el`](https://github.com/nix-community/nix-straight.el) under the hood to install dependencies. It's a low level wrapper to add Nix integration over [`straight.el`](https://github.com/radian-software/straight.el), the declarative package manager used by Doom Emacs. 
+nix-doom-emacs uses [`nix-straight.el`](https://github.com/nix-community/nix-straight.el) under the hood to install dependencies. It's a low level wrapper to add Nix integration over [`straight.el`](https://github.com/radian-software/straight.el), the declarative package manager used by Doom Emacs. 
 
-Before using Nix-Doom-Emacs, make sure to read [`nix-straight.el`'s README'](https://github.com/nix-community/nix-straight.el), and that you understand the consequences.
+Before using nix-doom-emacs, make sure to read [`nix-straight.el`'s README'](https://github.com/nix-community/nix-straight.el), and that you understand the consequences.
 
 # Getting Started
 
@@ -111,7 +111,7 @@ in {
 }
 ```
 
-For what it's worth, you can see all overridable parameters of Nix-Doom-Emacs in [default.nix](../default.nix).
+For what it's worth, you can see all overridable parameters of nix-doom-emacs in [default.nix](../default.nix).
 
 ## Standalone
 

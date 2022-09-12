@@ -19,15 +19,15 @@ compatible with the `doom-emacs` requirements.
 
 # Quick Start
 
-If you want to get a taste of Nix-Doom-Emacs, you can run: 
+If you want to get a taste of nix-doom-emacs, you can run: 
 
 ```
 $ nix run github:nix-community/nix-doom-emacs
 ```
 
-Which will run Nix-Doom-Emacs with an example configuration. 
+Which will run nix-doom-emacs with an example configuration. 
 Continue to [the documentation](./docs) to learn how to customise your setup further to your needs.
 
 
 # Documentation
-To know how to use Nix-Doom-Emacs, and to fix other issues, check the [documentation](./docs)
+To know how to use nix-doom-emacs, and to fix other issues, check the [documentation](./docs)
