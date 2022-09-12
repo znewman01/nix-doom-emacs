@@ -1,6 +1,10 @@
 # FAQ
 This is more meant as a "Fully Anticipated Questions" than a "Frequently Asked Questions", as they're anticipated as common pitfalls to using NDE.
 
+## I am new to Nix. Is this the only way to use Doom Emacs with Nix/NixOS?
+
+Nope! Doom Emacs is still perfectly usable imperatively. In fact, the very author of Doom Emacs uses NixOS and install Doom Emacs with an ["imperative" setup](https://github.com/hlissner/dotfiles/blob/master/modules/editors/emacs.nix). You could just follow the instructions on the [Doom Emacs GitHub repository](https://github.com/doomemacs/doomemacs) to get a working setup.
+
 ## OK, I put your snippets into my NixOS configuration, and I put my Doom Emacs configuration as well. How do I `doom sync`?
 
 To update your Doom Emacs config, you simply run `nixos-rebuild switch` (or `home-manager switch` if you use Home-Manager standalone). Nix-Doom-Emacs will do everything else for you.
@@ -139,7 +143,7 @@ Running `ulimit -S -n 2048` will fix it for the duration of your shell session.
 This is very simple. you just use the `emacsPackage` attribute after applying `emacs-overlay` to your Nixpkgs. something like:
 
 ```nix
-programs.doom-emacs = {
+programs.doom-emacs =   {
   enable = true;
   doomPrivateDir = ./doom;
   emacsPackage = pkgs.emacsPgtkNativeComp; # I used the native comp pgtk as an example
