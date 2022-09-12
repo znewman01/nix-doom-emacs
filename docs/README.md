@@ -33,42 +33,27 @@ The Doom configuration will be referred to as `./doom.d` in these snippets. You 
   outputs = {
     self,
     nixpkgs,
-    lib,
     home-manager,
     nix-doom-emacs,
     ...
-  }:
-    let
-      system      = "x86_64-linux";
-      specialArgs = { inherit inputs; };
-    in {
-    nixosConfigurations.exampleHost = lib.nixosSystem {
-      inherit system specialArgs;
+  }: {
+    nixosConfigurations.exampleHost = nixpkgs.lib.nixosSystem {
+      system  = "x86_64-linux";
       modules = [
-        ./default.nix
         home-manager.nixosModules.home-manager
         {
-          home-manager.users.exampleUser.imports = [ ./home.nix ];
+          home-manager.users.exampleUser = { ... }: {
+            imports = [ nix-doom-emacs.hmModule ];
+            programs.doom-emacs = {
+              enable = true;
+              doomPrivateDir = ./doom; # Directory containing your config.el, init.el
+                                       # and packages.el files
+            };
+          };
         }
       ];
     };
   };
-}
-
-```
-
-`File: home.nix`
-```nix
-{ config, pkgs, inputs, ... }: {
-  imports = [ inputs.nix-doom-emacs.hmModule ];
-
-  # ...
-  programs.doom-emacs = {
-    enable = true;
-    doomPrivateDir = ./doom.d; # Directory containing your config.el, init.el
-                               # and packages.el files
-  };
-  # ...
 }
 ```
 
@@ -92,8 +77,6 @@ in {
 
 ## NixOS
 
-Using Nix-Doom-Emacs without Home-Manager isn't recommended, especially if you're a beginner.
-
 `File: flake.nix`
 ```nix
 {
@@ -105,18 +88,22 @@ Using Nix-Doom-Emacs without Home-Manager isn't recommended, especially if you'r
   outputs = {
     self,
     nixpkgs,
-    lib,
     nix-doom-emacs,
     ...
-  }:
-    let
-      system      = "x86_64-linux";
-      specialArgs = { inherit inputs; };
-    in {
-    nixosConfigurations.exampleHost = lib.nixosSystem {
-      inherit system specialArgs;
+  }: {
+    nixosConfigurations.exampleHost = nixpkgs.lib.nixosSystem {
+      system  = "x86_64-linux";
       modules = [
-        ./default.nix
+        { 
+          environment.systemPackages = 
+            let
+              doom-emacs = inputs.nix-doom-emacs.packages.${system}.defaut.override {
+                doomPrivateDir = ./doom;
+              };
+            in [
+              doom-emacs
+            ];
+        }
         # ...
       ];
     };
@@ -124,27 +111,9 @@ Using Nix-Doom-Emacs without Home-Manager isn't recommended, especially if you'r
 }
 ```
 
-`File: default.nix`
-```nix
-{ config, nixpkgs, lib, inputs }: {
-  # ...
-  environment.systemPackages = 
-    let
-      doom-emacs = inputs.nix-doom-emacs.packages.${system}.default.override {
-        doomPrivateDir = ./doom;
-      };
-    in [
-      doom-emacs
-    ];
-  # ...
-}
-```
-
 For what it's worth, you can see all overridable parameters of Nix-Doom-Emacs in [default.nix](../default.nix).
 
 ## Standalone
-
-This is the least recommended method. This uses the `devShell` (or `nix-shell` feature if you're using non-flakes, which is not recommended) feature of Nix.
 
 ### Flake
 

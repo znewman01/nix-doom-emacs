@@ -7,11 +7,11 @@ Nope! Doom Emacs is still perfectly usable imperatively. In fact, the very autho
 
 ## OK, I put your snippets into my NixOS configuration, and I put my Doom Emacs configuration as well. How do I `doom sync`?
 
-To update your Doom Emacs config, you simply run `nixos-rebuild switch` (or `home-manager switch` if you use Home-Manager standalone). Nix-Doom-Emacs will do everything else for you.
+To update your Doom Emacs config, you simply rebuild your configuration. For example, in NixOS you can use `nixos-rebuild switch` (or `home-manager switch` if you use Home-Manager standalone). Nix-Doom-Emacs will do everything else for you.
 
 ## How do I install my favourite package?
 
-You should use the `emacsPackagesOverlay` attribute. Here's an example that installs `magit-delta` which depends on Git:
+You should use the `emacsPackagesOverlay` attribute. Here's an example that installs `magit-delta`, which depends on Git:
 
 ```nix
 programs.doom-emacs = {
