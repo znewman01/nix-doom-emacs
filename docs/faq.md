@@ -93,16 +93,24 @@ idris2-repl.el:29:2: Error: Cannot open load file: No such file or directory, pr
 
 The way to fix it is by just adding the dependency it's complaining about.
 
+Though, not all packages will complain very clearly about missing dependencies or really any issue. The best way to know how to get around this is to know how to debug Nix packages and derivations. Tools like `nix build`, `nix repl`, and `nix log` are your friend. Especially if you want to debug another person's configuration, or your own Nix-Doom-Emacs configuration without needing to `nixos-rebuild` it, then `nix build` is very useful.
+
+For an example, if a person is using Home-Manager+NixOS, then you can build their configuration via `nix build $CONFIG_PATH_HERE#nixosConfigurations.nixos.config.home-manager.users.$USER_HERE.programs.doom-emacs.package`. You need to replace `$CONFIG_PATH_HERE` with the path (like `.` if it's in the current directory), and `$USER_HERE` with the user. This could fail, and if it does, it'll tell you to use the `nix log` command to look at the full log. This will be important.
+
+For the `nix repl` command, it could be very useful for debugging as well. To know how to use it, I suggest [nix pills](https://nixos.org/guides/nix-pills/index.html), and to look at [the nix manual](https://nixos.org/manual/nix/stable/command-ref/new-cli/nix3-repl.html)
+
 ## How do I enable the service?
 
 There aren't many complications about this. If you use the Home-Manager module, it's simply `services.emacs.enable = true;`. The Home-Manager module will do the rest for you.
 
-But if you're not, and you're using a standalone method, you'll need:
+If you're not, and you're using a standalone method (NixOS only without home-manager/nix-darwin) instead, you'll need:
 
 ```nix
 services.emacs = {
   enable = true;
-  package = inputs.doom-emacs.packages.${system}.doom-emacs;
+  package = inputs.doom-emacs.packages.${system}.doom-emacs.override {
+    doomPrivateDir = ./doom;
+  };
 };
 ```
 
@@ -110,7 +118,13 @@ You can now run `emacsclient -c` to connect to the daemon.
 
 ## What is `trivialBuild`?
 
-Though beyond the scope of this document, `trivialBuild` is a Nixpkgs function to trivially build Emacs packages. You can use it to build e.g. local packages or packages hosted on Git repositories. It is not a Nix-Doom-Emacs tool.
+Though beyond the scope of this document, [`trivialBuild`](https://github.com/NixOS/nixpkgs/blob/master/pkgs/build-support/emacs/trivial.nix) is a Nixpkgs function to trivially build Emacs packages. You can use it to build e.g. local packages or packages hosted on Git repositories. It is not a Nix-Doom-Emacs tool. It's also in a family of functions in Nixpkgs which are made to build Emacs packages. Such as:
+
+[`generic`](https://github.com/NixOS/nixpkgs/blob/master/pkgs/build-support/emacs/generic.nix): This is the "base" function which all the other build functions are derived from.
+
+[`elpaBuild`](https://github.com/NixOS/nixpkgs/blob/master/pkgs/build-support/emacs/elpa.nix), and [`melpaBuild`](https://github.com/NixOS/nixpkgs/blob/master/pkgs/build-support/emacs/elpa.nix): Those are self-explanatory. To find examples of how they're used, you'll unfortunately have to [search Nixpkgs](https://github.com/NixOS/nixpkgs/search) for them. Luckily, the way they're used in Nixpkgs is very simple.
+
+For what it's worth, this will not be the last time you muddle around in the Nixpkgs code to understand how to use something. The NixOS project is known to have very bad documentation, and unfortunately the code may be your only way to understand some things.
 
 ## Help! Nix-Doom-Emacs isn't working if I set DOOMDIR or EMACSDIR
 
@@ -119,4 +133,3 @@ You shouldn't do that. The only thing that Nix-Doom-Emacs writes in your $HOME i
 # Help! on MacOS, it says "Too many files open"!
 
 Running `ulimit -S -n 2048` will fix it for the duration of your shell session.
-

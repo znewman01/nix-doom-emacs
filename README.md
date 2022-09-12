@@ -17,5 +17,9 @@ some may not be fully compatible as the version available in NixOS or
 [emacs-overlay](https://github.com/nix-community/emacs-overlay) may not be
 compatible with the `doom-emacs` requirements.
 
+# Quick Start
+
+If you're impatient, you can run ``nix run github:nix-community/nix-doom-emacs``. If you want to use it more extensively, then you should continue reading [the documentation](./docs)
+
 # Documentation
 To know how to use Nix-Doom-Emacs, and to fix other issues, check the [documentation](./docs)

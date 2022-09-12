@@ -1,14 +1,20 @@
 # Documentation for Nix-Doom-Emacs
 
-Nix-Doom-Emacs (also commonly referred to as NDE in chatrooms) is a project with a lot of moving pieces and hacks; it's a project that is itself a fork of another project that has these moving pieces. Thus, it's not out of the blue to expect it to be a tiny bit more buggy for most people than other software. If you encounter any issues that make it not usable to you (or if you need support), please talk to us first in the [Matrix room](https://matrix.to/#/#doom-emacs:nixos.org) and if it's indeed a bug of Nix-Doom-Emacs, file it in the [issue tracker](https://github.com/nix-community/nix-doom-emacs/issues). If you find this documentation unclear or incomplete, please let us know as well.
+Nix-Doom-Emacs (also commonly referred to as NDE in chatrooms) is a project with lots of moving pieces and hacks. Users are expected to know their way around Nix and Emacs (also Emacs Lisp) before using this project, and users should expect to have to debug things.
+
+If you encounter any issues that make it not usable to you (or if you need support), please talk to us first in the [Matrix room](https://matrix.to/#/#doom-emacs:nixos.org) and if it's indeed a bug of Nix-Doom-Emacs, file it in the [issue tracker](https://github.com/nix-community/nix-doom-emacs/issues).
+
+If you find this documentation unclear or incomplete, please let us know as well.
 
 Here's the [FAQ](./faq.md)
 
-Nix-Doom-Emacs uses [nix-straight.el](https://github.com/nix-community/nix-straight.el) under the hood to install dependencies. It's a low level wrapper to add Nix integration over straight.el, the declarative package manager used by Doom Emacs. 
+Nix-Doom-Emacs uses [`nix-straight.el`](https://github.com/nix-community/nix-straight.el) under the hood to install dependencies. It's a low level wrapper to add Nix integration over [`straight.el`](https://github.com/radian-software/straight.el), the declarative package manager used by Doom Emacs. 
+
+Before using Nix-Doom-Emacs, make sure to read [`nix-straight.el`'s README'](https://github.com/radian-software/straight.el) and that you understand the limitations.
 
 If you're not aware yet, then:
 
-#### **WARNING**: HERE BE DRAGONS! THIS IS A FRAGILE PROJECT
+#### **WARNING**: HERE BE DRAGONS! This project expects fairly advanced and experienced users.
 
 # Getting Started
 
@@ -88,9 +94,9 @@ in {
 ```
 
 
-## Standalone
+## NixOS
 
-Using Nix-Doom-Emacs standalone isn't recommended, especially if you're a beginner.
+Using Nix-Doom-Emacs without Home-Manager isn't recommended, especially if you're a beginner.
 
 `File: flake.nix`
 ```nix
@@ -137,3 +143,9 @@ Using Nix-Doom-Emacs standalone isn't recommended, especially if you're a beginn
   # ...
 }
 ```
+
+For what it's worth, you can see all overridable parameters of Nix-Doom-Emacs in [default.nix](../default.nix).
+
+## Standalone
+
+This is the least recommended method. 
