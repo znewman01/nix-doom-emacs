@@ -19,13 +19,14 @@ compatible with the `doom-emacs` requirements.
 
 # Quick Start
 
-If you're impatient, you can run: 
+If you want to get a taste of Nix-Doom-Emacs, you can run: 
 
 ```
 $ nix run github:nix-community/nix-doom-emacs
 ```
 
-To use this project more extensively, you should read the documentation.
+Which will run Nix-Doom-Emacs with an example configuration. 
+Continue to [the documentation](./docs) to learn how to customise your setup further to your needs.
 
 
 # Documentation
