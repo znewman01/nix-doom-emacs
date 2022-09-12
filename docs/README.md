@@ -1,8 +1,8 @@
 # Documentation for Nix-Doom-Emacs
 
-Nix-Doom-Emacs (also commonly referred to as NDE in chatrooms) is a project with lots of moving pieces and hacks. Users are expected to know their way around Nix and Emacs (also Emacs Lisp) before using this project, and users should expect to have to debug things.
+Nix-Doom-Emacs (also commonly referred to as NDE in chatrooms) is a project with lots of moving pieces and hacks. Users are expected to know their way around using (and especially debugging) Nix and Emacs Lisp before using this project.
 
-If you encounter any issues that make it not usable to you (or if you need support), please talk to us first in the [Matrix room](https://matrix.to/#/#doom-emacs:nixos.org) and if it's indeed a bug of Nix-Doom-Emacs, file it in the [issue tracker](https://github.com/nix-community/nix-doom-emacs/issues).
+If you encounter any issues that make it unusable to you (or if you need support), please talk to us first in the [Matrix room](https://matrix.to/#/#doom-emacs:nixos.org) and if it's indeed a bug of Nix-Doom-Emacs, file it in the [issue tracker](https://github.com/nix-community/nix-doom-emacs/issues).
 
 If you find this documentation unclear or incomplete, please let us know as well.
 
@@ -10,11 +10,7 @@ Here's the [FAQ](./faq.md)
 
 Nix-Doom-Emacs uses [`nix-straight.el`](https://github.com/nix-community/nix-straight.el) under the hood to install dependencies. It's a low level wrapper to add Nix integration over [`straight.el`](https://github.com/radian-software/straight.el), the declarative package manager used by Doom Emacs. 
 
-Before using Nix-Doom-Emacs, make sure to read [`nix-straight.el`'s README'](https://github.com/radian-software/straight.el) and that you understand the limitations.
-
-If you're not aware yet, then:
-
-#### **WARNING**: HERE BE DRAGONS! This project expects fairly advanced and experienced users.
+Before using Nix-Doom-Emacs, make sure to read [`nix-straight.el`'s README'](https://github.com/nix-community/nix-straight.el), and that you understand the consequences.
 
 # Getting Started
 
@@ -148,4 +144,51 @@ For what it's worth, you can see all overridable parameters of Nix-Doom-Emacs in
 
 ## Standalone
 
-This is the least recommended method. 
+This is the least recommended method. This uses the `devShell` (or `nix-shell` feature if you're using non-flakes, which is not recommended) feature of Nix.
+
+### Flake
+
+``` nix
+{
+  description = "nix-doom-emacs shell";
+
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nix-doom-emacs.url = "github:nix-community/nix-doom-emacs";
+  };
+
+  outputs = { self, nixpkgs, nix-doom-emacs, ... }:
+  let
+    system = "x86_64-linux";
+    pkgs = import nixpkgs { inherit system; };
+    doom-emacs = nix-doom-emacs.packages.${system}.default.override {
+      doomPrivateDir = ./doom.d;
+    };
+  in
+  {
+    devShells.${system}.default = pkgs.mkShell {
+      buildInputs = [ doom-emacs ];
+    };
+  };
+}
+```
+
+### Non-Flake
+``` nix
+{ pkgs ? import <nixpkgs> { } }:
+
+let
+  repo = pkgs.fetchFromGitHub {
+    owner = "nix-community";
+    repo = "nix-doom-emacs";
+    rev = "<commit>";
+    sha256 = "<hash>";
+  };
+  nix-doom-emacs = pkgs.callPackage (import repo) {
+    doomPrivateDir = ./doom.d;
+  };
+in
+pkgs.mkShell {
+  buildInputs = [ nix-doom-emacs ];
+}
+```
