@@ -1,6 +1,6 @@
-| faq           | readme                  | reference                          |
-|     ---       |           ---           |                ---                 |
-| this document | [README.md](/README.md) |  [docs/refrence.md](./refrence.md) |
+| readme                  | reference                           | faq            |
+|           ---           |                ---                  |     ---        |
+| [README.md](/README.md) |  [docs/reference.md](./reference.md)| this document  |
 
 # FAQ
 This is more meant as a "Fully Anticipated Questions" than a "Frequently Asked Questions", as they're anticipated as common pitfalls to using NDE.
