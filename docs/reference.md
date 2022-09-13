@@ -1,7 +1,6 @@
-| faq                     | readme                  | reference     |
-|           ---           |           ---           |      ---      |
-| [docs/faq.md](./faq.md) | [README.md](/README.md) | this document |
-
+| readme                  | reference     | faq                     |
+|           ---           |      ---      |           ---           |
+| [README.md](/README.md) | this document | [docs/faq.md](./faq.md) |
 
 # nix-doom-emacs reference
 
