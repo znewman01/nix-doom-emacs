@@ -1,6 +1,6 @@
-| faq                     | readme        | reference                          |
-|           ---           |      ---      |                ---                 |
-| [docs/faq.md](./faq.md) | this document |  [docs/refrence.md](./refrence.md) |
+| faq                          | readme        | reference                               |
+|            ---               |      ---      |                  ---                    |
+| [docs/faq.md](./docs/faq.md) | this document |  [docs/refrence.md](./docs/refrence.md) |
 
 
 
