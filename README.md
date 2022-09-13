@@ -1,6 +1,6 @@
-| readme        | reference                                | faq                           |
-|      ---      |                  ---                     |            ---                |
-| this document |  [docs/reference.md](./docs/reference.md)| [docs/faq.md](./docs/faq.md)  |
+| readme        | reference                               | faq                           |
+|      ---      |                  ---                    |            ---                |
+| this document | [docs/reference.md](./docs/reference.md)| [docs/faq.md](./docs/faq.md)  |
 
 # nix-doom-emacs
 
@@ -29,5 +29,7 @@ If you want to get a taste of nix-doom-emacs, you can run ``nix run github:nix-c
 Which will run nix-doom-emacs with an example configuration. 
 
 Pick which setup you're using here (if you're not using NixOS or Home-Manager, then you should use standalone):
-<table><tr>Home-Manager<th></th><th>NixOS</th><th>Standalone</th></tr><tr><th>[Flake + Home-Manager](./docs/reference.md#flake--home-manager)</th><th>[NixOS](./docs/reference.md#nixos)</th><th>[Standalone](./docs/reference.md#standalone)</th></tr></table>
 
+| Home-Manager | NixOS | Standalone |
+|      ---     |  ---  |    ---     |
+| [Flake + Home-Manager](./docs/reference.md#flake--home-manager) | [NixOS](./docs/reference.md#nixos) | [Standalone](./docs/reference.md#standalone) |
