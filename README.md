@@ -32,4 +32,4 @@ Pick which setup you're using here (if you're not using NixOS or Home-Manager, t
 
 | Home-Manager | NixOS | Standalone |
 |      ---     |  ---  |    ---     |
-| [Flake + Home-Manager](./docs/reference.md#flake--home-manager) | [NixOS](./docs/reference.md#nixos) | [Standalone](./docs/reference.md#standalone) |
+| [Flake + Home-Manager](./docs/reference.md#home-manager) | [NixOS](./docs/reference.md#nixos) | [Standalone](./docs/reference.md#standalone) |
