@@ -1,4 +1,6 @@
-<table><tr><th>faq</th><th>readme</th><th>reference</th></tr><tr><th>this document</th><th>[README.md](/README.md)</th><th>[docs/reference.md](./docs/reference.md)</th></tr></table>
+| faq           | readme                  | reference                          |
+|     ---       |           ---           |                ---                 |
+| this document | [README.md](/README.md) |  [docs/refrence.md](./refrence.md) |
 
 # FAQ
 This is more meant as a "Fully Anticipated Questions" than a "Frequently Asked Questions", as they're anticipated as common pitfalls to using NDE.

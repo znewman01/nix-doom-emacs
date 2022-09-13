@@ -1,4 +1,7 @@
-<table><tr><th>faq</th><th>readme</th><th>reference</th></tr><tr><th>[docs/faq.md](./faq.md)</th><th>[README.md](/README.md)</th><th>this document</th></tr></table>
+| faq                     | readme                  | reference     |
+|           ---           |           ---           |      ---      |
+| [docs/faq.md](./faq.md) | [README.md](/README.md) | this document |
+
 
 # nix-doom-emacs reference
 
