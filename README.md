@@ -1,3 +1,5 @@
+<table><tr><th>faq</th><th>readme</th><th>reference</th></tr><tr><th>[docs/faq.md](./faq.md)</th><th>this document</th><th>[docs/reference.md](./docs/reference.md)</th></tr></table>
+
 # nix-doom-emacs
 
 |     | Status |
@@ -9,6 +11,8 @@
 Nix expression to install and configure
 [doom-emacs](https://github.com/doomemacs/doomemacs).
 
+nix-doom-emacs (also commonly referred to as NDE in chatrooms) is a project with lots of moving pieces and hacks. Users are expected to know their way around using (and especially debugging) Nix and Emacs Lisp in order to use this project.
+
 The expression builds a `doom-emacs` distribution with dependencies
 pre-installed based on an existing `~/.doom.d` directory.
 
@@ -19,15 +23,9 @@ compatible with the `doom-emacs` requirements.
 
 # Quick Start
 
-If you want to get a taste of nix-doom-emacs, you can run: 
-
-```
-$ nix run github:nix-community/nix-doom-emacs
-```
-
+If you want to get a taste of nix-doom-emacs, you can run ``nix run github:nix-community/nix-doom-emacs``
 Which will run nix-doom-emacs with an example configuration. 
-Continue to [the documentation](./docs) to learn how to customise your setup further to your needs.
 
+Pick which setup you're using here (if you're not using NixOS or Home-Manager, then you should use standalone):
+<table><tr>Home-Manager<th></th><th>NixOS</th><th>Standalone</th></tr><tr><th>[Flake + Home-Manager](./docs/reference.md#flake--home-manager)</th><th>[NixOS](./docs/reference.md#nixos)</th><th>[Standalone](./docs/reference.md#standalone)</th></tr></table>
 
-# Documentation
-To know how to use nix-doom-emacs, and to fix other issues, check the [documentation](./docs)
