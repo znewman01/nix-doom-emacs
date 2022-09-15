@@ -12,7 +12,7 @@ Currently, `nix-straight.el` only extracts package names and uses [`emacs-overla
 
 # Getting Started
 
-To get started, we suggest these methods. They are ordered from most suggested to least suggested.
+Ordered from most suggested to least suggested.
 In all of these methods, you'll need your Doom Emacs configuration. It should contain the following three files: 
 `config.el`, `init.el` and `packages.el`. If you don't already have an existing `doom-emacs` configuration, you can use the contents of `test/doom.d` as a template.
 
