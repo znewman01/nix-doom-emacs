@@ -33,7 +33,8 @@ programs.doom-emacs = {
 
 ## How do I add a package that's only on GitHub (or any Git frontend)
 
-This requires a few more lines, but it isn't by any means difficult. For an example, this installs `idris2-mode` which isn't on ELPA, but is hosted on GitHub:
+This is the question you need if your Doom configuration errors with `Package not available`. `nix-straight.el` assumes that packages are on emacs-overlay's packages, which only include (M)ELPA. This question assumes the package uses GitHub, so it uses the `fetchFromGitHub` function. To see which function you'd need to use, you should look at [the Nixpkgs manual's fetchers section](https://nixos.org/manual/nixpkgs/stable/#chap-pkgs-fetchers)
+This requires a few more lines, but it isn't by any means difficult. For an example, this installs `idris2-mode` which isn't on (M)ELPA, but is hosted on GitHub:
 
 ```nix
 programs.doom-emacs = {
