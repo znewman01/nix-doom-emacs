@@ -1,22 +1,15 @@
-| readme                  | reference                           | faq            |
-|           ---           |                ---                  |     ---        |
-| [README.md](/README.md) | [docs/reference.md](./reference.md)| this document  |
+| [readme](/README.md) | [reference](./reference.md)| faq |
 
-# FAQ
-This is more meant as a "Fully Anticipated Questions" than a "Frequently Asked Questions", as they're anticipated as common pitfalls to using NDE.
+# Frequently Asked Questions
 
 ## I am new to Nix. Is this the only way to use Doom Emacs with Nix/NixOS?
 
-Nope! Doom Emacs is still perfectly usable imperatively. In fact, the very author of Doom Emacs uses NixOS and install Doom Emacs with an ["imperative" setup](https://github.com/hlissner/dotfiles/blob/master/modules/editors/emacs.nix). You could just follow the instructions on the [Doom Emacs GitHub repository](https://github.com/doomemacs/doomemacs) to get a working setup.
+Nope! Doom Emacs is still perfectly usable imperatively. In fact, the very author of Doom Emacs uses NixOS and install Doom Emacs with an ["imperative" setup](https://github.com/hlissner/dotfiles/blob/master/modules/editors/emacs.nix). You can follow the instructions on the [Doom Emacs GitHub repository](https://github.com/doomemacs/doomemacs) to get a working setup.
 
-## OK, I put your snippets into my NixOS configuration, and I put my Doom Emacs configuration as well. How do I `doom sync`?
 
-To update your Doom Emacs config, you simply rebuild your configuration. For example, in NixOS you can use `nixos-rebuild switch` (or `home-manager switch` if you use Home-Manager standalone). nix-doom-emacs will do everything else for you.
+## How do I add a non-(M)ELPA dependency to a package's build?
 
-In an imperative environment, Doom updates can break Emacs with no easy way to roll back.
-nix-doom-emacs moves the moving parts of your Emacs installation into the Nix build sandbox.
-
-## How do I add a native dependency to a package's build?
+You'd usually need to do this when a (M)ELPA pakage needs some package to exist on your system, like `git` for example.
 
 You should use the `emacsPackagesOverlay` attribute. Here's an example that installs `magit-delta`, which depends on Git:
 
@@ -33,8 +26,9 @@ programs.doom-emacs = {
 
 ## How do I add a package that's only on GitHub (or any Git frontend)
 
-This is the question you need if your Doom configuration errors with `Package not available`. `nix-straight.el` assumes that packages are on emacs-overlay's packages, which only include (M)ELPA. This question assumes the package uses GitHub, so it uses the `fetchFromGitHub` function. To see which function you'd need to use, you should look at [the Nixpkgs manual's fetchers section](https://nixos.org/manual/nixpkgs/stable/#chap-pkgs-fetchers)
-This requires a few more lines, but it isn't by any means difficult. For an example, this installs `idris2-mode` which isn't on (M)ELPA, but is hosted on GitHub:
+If you try to add a package that isn't from (M)ELPA, you'd get this error: `Package not available`. This is because `nix-straight.el` assumes that packages are on emacs-overlay's packages, which only include (M)ELPA.
+This question assumes the package uses GitHub, so it uses the `fetchFromGitHub` function. To see which function you'd need to use, you should look at [the Nixpkgs manual's fetchers section](https://nixos.org/manual/nixpkgs/stable/#chap-pkgs-fetchers)
+For an example, this installs `idris2-mode` which isn't on (M)ELPA, but is hosted on GitHub:
 
 ```nix
 programs.doom-emacs = {
@@ -43,7 +37,7 @@ programs.doom-emacs = {
     idris2-mode = self.trivialBuild {
       pname = "idris2-mode";
       ename = "idris2-mode";
-      version = "0.0.0";
+      version = "unstable-2022-09-21";
       buildInputs = [ self.prop-menu ];
       src = pkgs.fetchFromGitHub {
         owner = "idris-community";
@@ -58,9 +52,9 @@ programs.doom-emacs = {
 
 ## nix-doom-emacs isn't working if I set DOOMDIR or EMACSDIR
 
-You shouldn't do that. nix-doom-emacs' home-manager module only writes `~/.emacs.d/init.el` in your `$HOME`, which points to the Nix store. Make sure to remove the environment variables from your configuration, then reboot after rebuilding it. If for just the session, you can just `unset` those 2 variables.
+You shouldn't do that. nix-doom-emacs' home-manager module writes `~/.emacs.d` in your `$HOME`. Make sure to remove the environment variables from your configuration, then reboot after rebuilding it. If for just the session, you can just `unset` those 2 variables.
 
-## I'm on MacOS and it says "Too many files open"!
+## It erros with "Too many files open"!
 
 Running `ulimit -S -n 2048` will fix it for the duration of your shell session.
 For a more permanent solution, NixOS has [`security.pam.loginLimits`](https://search.nixos.org/options?channel=22.05&from=0&size=50&sort=relevance&type=packages&query=security.pam.loginLimits)

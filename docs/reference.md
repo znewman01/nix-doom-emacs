@@ -1,18 +1,13 @@
-| readme                  | reference     | faq                     |
-|           ---           |      ---      |           ---           |
-| [README.md](/README.md) | this document | [docs/faq.md](./faq.md) |
+| [readme](/README.md) | reference | [faq](./faq.md) |
 
 # nix-doom-emacs reference
 
-If you encounter any issues while using nix-doom-emacs, you can find some of us in the [Matrix room](https://matrix.to/#/#doom-emacs:nixos.org). Only bugs should be filed in our [issue tracker](https://github.com/nix-community/nix-doom-emacs/issues).
-
 nix-doom-emacs uses [`nix-straight.el`](https://github.com/nix-community/nix-straight.el) under the hood to install dependencies. It's a low level wrapper to integrate Nix with [`straight.el`](https://github.com/radian-software/straight.el). It is maintained by the same people as this project.
 
-Currently, `nix-straight.el` only extracts package names and uses [`emacs-overlay`](https://github.com/nix-community/emacs-overlay) to obtain the package sources. This works most of the time but occasionally results in very obscure issues.
+Currently, `nix-straight.el` only extracts package names and uses [`emacs-overlay`](https://github.com/nix-community/emacs-overlay) to obtain the package sources. This works most of the time but occasionally results in obscure issues with recently updated packages.
 
 # Getting Started
 
-Ordered from most suggested to least suggested.
 In all of these methods, you'll need your Doom Emacs configuration. It should contain the following three files: 
 `config.el`, `init.el` and `packages.el`. If you don't already have an existing `doom-emacs` configuration, you can use the contents of `test/doom.d` as a template.
 
@@ -218,6 +213,16 @@ in {
 }
 ```
 
+## Updating configuration
+
+Note that, unlike imperative `Doom Emacs`, we do not have a `doom sync`. Our project builds an Emacs with your Doom configuration embedded in it. `doom sync` just updates packages.
+This doesn't mean that you can't update your packages and configuration, obviously:
+
+To update your Doom Emacs config, you simply rebuild your configuration. For example, in NixOS you can use `nixos-rebuild switch` (or `home-manager switch` if you use Home-Manager standalone). nix-doom-emacs will do everything else for you.
+
+In an imperative environment, Doom updates can break Emacs with no easy way to roll back.
+nix-doom-emacs moves the moving parts of your Emacs installation into the Nix build sandbox.
+
 ## trivialBuild and co
 
 Though beyond the scope of this document, [`trivialBuild`](https://github.com/NixOS/nixpkgs/blob/master/pkgs/build-support/emacs/trivial.nix) is a Nixpkgs function to trivially build Emacs packages, if you're confused about it's usage here. You can use it to build e.g. local packages or packages hosted on Git repositories. It is not a nix-doom-emacs tool. It's also in a family of functions in Nixpkgs which are made to build Emacs packages. Such as:
@@ -225,3 +230,7 @@ Though beyond the scope of this document, [`trivialBuild`](https://github.com/Ni
 [`generic`](https://github.com/NixOS/nixpkgs/blob/master/pkgs/build-support/emacs/generic.nix): This is the "base" function which all the other build functions are derived from.
 
 [`elpaBuild`](https://github.com/NixOS/nixpkgs/blob/master/pkgs/build-support/emacs/elpa.nix), and [`melpaBuild`](https://github.com/NixOS/nixpkgs/blob/master/pkgs/build-support/emacs/elpa.nix): Those are self-explanatory. To find examples of how they're used, you'll unfortunately have to [search Nixpkgs](https://github.com/NixOS/nixpkgs/search) for them. Luckily, the way they're used in Nixpkgs is very simple.
+
+# Support
+
+If you encounter any issues while using nix-doom-emacs, you can find some of us in the [Matrix room](https://matrix.to/#/#doom-emacs:nixos.org).
