@@ -22,6 +22,27 @@ in
       '';
       apply = path: if lib.isStorePath path then path else builtins.path { inherit path; };
     };
+    doomPackageDir = mkOption {
+      description = ''
+        A Doom configuration directory from which to build the Emacs package environment.
+
+        Can be used, for instance, to prevent rebuilding the Emacs environment
+        each time the `config.el` changes.
+
+        Can be provided as a directory or derivation. If not given, package
+        environment is built against `doomPrivateDir`.
+      '';
+      apply = path: if lib.isStorePath path then path else builtins.path { inherit path; };
+      example = literalExample ''
+       doomPackageDir = pkgs.linkFarm "my-doom-packages" [
+           # straight needs a (possibly empty) `config.el` file to build
+           { name = "config.el"; path = pkgs.emptyFile; }
+           { name = "init.el"; path = ./doom.d/init.el; }
+           { name = "packages.el"; path = pkgs.writeText "(package! inheritenv)"; }
+           { name = "modules"; path = ./my-doom-module; }
+         ];
+       '';
+    };
     extraConfig = mkOption {
       description = ''
         Extra configuration options to pass to doom-emacs.
