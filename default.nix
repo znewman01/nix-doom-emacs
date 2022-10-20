@@ -13,11 +13,14 @@
          # straight needs a (possibly empty) `config.el` file to build
          { name = "config.el"; path = pkgs.emptyFile; }
          { name = "init.el"; path = ./doom.d/init.el; }
-         { name = "packages.el"; path = pkgs.writeText "(package! inheritenv)"; }
+         {
+           name = "packages.el";
+           path = pkgs.writeText "packages.el" "(package! inheritenv)";
+         }
          { name = "modules"; path = ./my-doom-module; }
        ];
    */
-,  doomPackageDir ? null
+,  doomPackageDir ? doomPrivateDir
   /* Extra packages to install
 
      Useful for non-emacs packages containing emacs bindings (e.g.
@@ -123,8 +126,6 @@ let
   # Bundled version of `emacs-overlay`
   emacs-overlay = import (lock "emacs-overlay") pkgs pkgs;
 
-  doomPackageInstallDir = if doomPackageDir == null then doomPrivateDir else doomPackageDir;
-
   # Stage 2: install dependencies and byte-compile prepared source
   doomLocal = let
     straight-env = pkgs.callPackage (lock "nix-straight") {
@@ -146,7 +147,7 @@ let
       phases = [ "installPhase" ];
       nativeBuildInputs = [ git ];
       preInstall = ''
-        export DOOMDIR=${doomPackageInstallDir}
+        export DOOMDIR=${doomPackageDir}
         export DOOMLOCALDIR=$(mktemp -d)/local/
       '';
     });
@@ -164,7 +165,7 @@ let
     phases = [ "installPhase" ];
     nativeBuildInputs = [ git ];
     preInstall = ''
-      export DOOMDIR=${doomPackageInstallDir}
+      export DOOMDIR=${doomPackageDir}
       export DOOMLOCALDIR=$out/
 
       # Create a bogus $HOME directory because gccEmacs is known to require

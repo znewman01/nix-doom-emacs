@@ -41,4 +41,26 @@ in
     dependencyOverrides = inputs;
     emacsPackages = with pkgs; emacsPackagesFor emacsGit;
   };
+  init-example-el-splitdir = self.outputs.package.${system} {
+    dependencyOverrides = inputs;
+    doomPrivateDir = pkgs.linkFarm "my-doom-packages" [
+         { name = "config.el"; path = ./test/doom.d/config.el; }
+         { name = "init.el"; path = ./test/doom.d/init.el; }
+         # Should *not* fail because we're building our straight environment
+         # using the doomPackageDir, not the doomPrivateDir.
+         {
+           name = "packages.el";
+           path = pkgs.writeText "packages.el" "(package! not-a-valid-package)";
+         }
+       ];
+    doomPackageDir = pkgs.linkFarm "my-doom-packages" [
+         # straight needs a (possibly empty) `config.el` file to build
+         { name = "config.el"; path = pkgs.emptyFile; }
+         { name = "init.el"; path = ./test/doom.d/init.el; }
+         {
+           name = "packages.el";
+           path = pkgs.writeText "packages.el" "(package! inheritenv)";
+         }
+       ];
+  };
 }
