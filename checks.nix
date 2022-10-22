@@ -12,8 +12,8 @@ let
   # we are cloning HM here for the same reason as above, to avoid
   # an extra additional input to be added to flake
   home-manager = builtins.fetchTarball {
-    url = "https://github.com/nix-community/home-manager/tarball/8160b3b45b8457d58d2b3af2aeb2eb6f47042e0f";
-    sha256 = "sha256-/aN3p2LaRNVXf7w92GWgXq9H5f23YRQPOvsm3BrBqzU=";
+    url = "https://github.com/nix-community/home-manager/tarball/c485669ca529e01c1505429fa9017c9a93f15559";
+    sha256 = "1zdclkqg1zg06x986q4s03h574djbk8vyrhyqar9yzk61218vmij";
   };
 in
 {
