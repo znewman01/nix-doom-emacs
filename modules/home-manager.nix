@@ -34,7 +34,7 @@ in
       '';
       apply = path: if lib.isStorePath path then path else builtins.path { inherit path; };
       example = literalExample ''
-       doomPackageDir = pkgs.linkFarm "my-doom-packages" [
+        doomPackageDir = pkgs.linkFarm "my-doom-packages" [
            # straight needs a (possibly empty) `config.el` file to build
            { name = "config.el"; path = pkgs.emptyFile; }
            { name = "init.el"; path = ./doom.d/init.el; }
