@@ -1,5 +1,26 @@
 { # The files would be going to ~/.config/doom (~/.doom.d)
   doomPrivateDir
+  /* A Doom configuration directory from which to build the Emacs package environment.
+
+     Can be used, for instance, to prevent rebuilding the Emacs environment
+     each time the `config.el` changes.
+
+     Can be provided as a directory or derivation. If not given, package
+     environment is built against `doomPrivateDir`.
+
+     Example:
+       doomPackageDir = pkgs.linkFarm "my-doom-packages" [
+         # straight needs a (possibly empty) `config.el` file to build
+         { name = "config.el"; path = pkgs.emptyFile; }
+         { name = "init.el"; path = ./doom.d/init.el; }
+         {
+           name = "packages.el";
+           path = pkgs.writeText "packages.el" "(package! inheritenv)";
+         }
+         { name = "modules"; path = ./my-doom-module; }
+       ];
+   */
+,  doomPackageDir ? doomPrivateDir
   /* Extra packages to install
 
      Useful for non-emacs packages containing emacs bindings (e.g.
@@ -126,7 +147,7 @@ let
       phases = [ "installPhase" ];
       nativeBuildInputs = [ git ];
       preInstall = ''
-        export DOOMDIR=${doomPrivateDir}
+        export DOOMDIR=${doomPackageDir}
         export DOOMLOCALDIR=$(mktemp -d)/local/
       '';
     });
@@ -144,7 +165,7 @@ let
     phases = [ "installPhase" ];
     nativeBuildInputs = [ git ];
     preInstall = ''
-      export DOOMDIR=${doomPrivateDir}
+      export DOOMDIR=${doomPackageDir}
       export DOOMLOCALDIR=$out/
 
       # Create a bogus $HOME directory because gccEmacs is known to require
