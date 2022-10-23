@@ -32,6 +32,7 @@ in
         Can be provided as a directory or derivation. If not given, package
         environment is built against `doomPrivateDir`.
       '';
+      default = cfg.doomPrivateDir;
       apply = path: if lib.isStorePath path then path else builtins.path { inherit path; };
       example = literalExample ''
         doomPackageDir = pkgs.linkFarm "my-doom-packages" [
@@ -106,7 +107,7 @@ in
       emacs = pkgs.callPackage self {
         extraPackages = (epkgs: cfg.extraPackages);
         emacsPackages = pkgs.emacsPackagesFor cfg.emacsPackage;
-        inherit (cfg) doomPrivateDir extraConfig emacsPackagesOverlay;
+        inherit (cfg) doomPrivateDir doomPackageDir extraConfig emacsPackagesOverlay;
         dependencyOverrides = inputs;
       };
     in
