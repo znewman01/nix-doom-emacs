@@ -8,6 +8,15 @@ self: super: {
     buildPhase = ":";
   } // args);
 
+  doom-modeline = self.straightBuild {
+    pname = "doom-modeline";
+    propagatedBuildInputs = with self; [
+      all-the-icons
+      compat
+      shrink-path
+    ];
+  };
+
   doom-snippets = self.straightBuild {
     pname = "doom-snippets";
     postInstall = ''
