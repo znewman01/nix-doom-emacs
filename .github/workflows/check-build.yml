@@ -11,10 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-      with:
-          # Nix Flakes doesn't work on shallow clones
-          fetch-depth: 0
-    - uses: cachix/install-nix-action@v17
+    - uses: cachix/install-nix-action@v18
       with:
         extra_nix_config: |
           extra-substituters = https://nix-community.cachix.org
@@ -47,10 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-      with:
-          # Nix Flakes doesn't work on shallow clones
-          fetch-depth: 0
-    - uses: cachix/install-nix-action@v17
+    - uses: cachix/install-nix-action@v18
       with:
         name: nix-community
     - name: Retrieve /nix/store archive
@@ -80,10 +74,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-      with:
-          # Nix Flakes doesn't work on shallow clones
-          fetch-depth: 0
-    - uses: cachix/install-nix-action@v17
+    - uses: cachix/install-nix-action@v18
       with:
         name: nix-community
     - name: Retrieve /nix/store archive
@@ -113,10 +104,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-      with:
-          # Nix Flakes doesn't work on shallow clones
-          fetch-depth: 0
-    - uses: cachix/install-nix-action@v17
+    - uses: cachix/install-nix-action@v18
       with:
         extra_nix_config: |
           extra-substituters = https://nix-community.cachix.org
