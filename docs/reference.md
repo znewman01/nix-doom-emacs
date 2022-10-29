@@ -1,4 +1,4 @@
-| [readme](/README.md) | reference | [faq](./faq.md) |
+<table><tr><th>[readme](../README.md)</th><th>**reference**</th><th>[faq](./faq.md)</th></tr></table>
 
 # nix-doom-emacs reference
 
@@ -91,7 +91,7 @@ in {
         { 
           environment.systemPackages = 
             let
-              doom-emacs = inputs.nix-doom-emacs.packages.${system}.defaut.override {
+              doom-emacs = inputs.nix-doom-emacs.packages.${system}.default.override {
                 doomPrivateDir = ./doom.d;
               };
             in [
@@ -105,7 +105,7 @@ in {
 }
 ```
 
-For what it's worth, you can see all overridable parameters of nix-doom-emacs in [default.nix](../default.nix).
+You can see all overridable parameters of nix-doom-emacs in [default.nix](../default.nix).
 
 ## Standalone
 
@@ -159,9 +159,10 @@ pkgs.mkShell {
 # Setup
 
 ## Emacs daemon
+
 If you use the Home-Manager module, you can enable it via `services.emacs.enable = true;`. The Home-Manager module will do the rest for you.
 
-If you're not, and you're using a standalone method (NixOS only without home-manager/nix-darwin) instead, you'll need:
+If you're not, and you're using a standalone method (NixOS/nix-darwin without Home-Manager) instead, you'll need:
 
 ```nix
 services.emacs = {
@@ -174,19 +175,19 @@ services.emacs = {
 
 You can now run `emacsclient -c` to connect to the daemon.
 
-## Custom Emacs derivations (i.e., pgtk, nativeComp)
+## Custom Emacs derivations (i.e., PGTK, NativeComp)
 
-You can use the `emacsPackage` attribute after applying `emacs-overlay` to your Nixpkgs:
+If you're using the Home-Manager module, you can use the `emacsPackage` attribute after applying `emacs-overlay` to your nixpkgs:
 
 ```nix
-programs.doom-emacs =   {
+programs.doom-emacs = {
   enable = true;
   doomPrivateDir = ./doom.d;
   emacsPackage = pkgs.emacsPgtkNativeComp;
 }
 ```
 
-For Non-HM:
+For standalone usage with Flakes:
 
 ```nix
 let
@@ -200,7 +201,8 @@ in {
 }
 ```
 
-And for Non-Flake:
+And for non-Flakes usage:
+
 ```nix
 let
   # ...
@@ -223,13 +225,15 @@ To update your Doom Emacs config, you simply rebuild your configuration. For exa
 In an imperative environment, Doom updates can break Emacs with no easy way to roll back.
 nix-doom-emacs moves the moving parts of your Emacs installation into the Nix build sandbox.
 
-## trivialBuild and co
+## Building third-party Emacs packages
 
-Though beyond the scope of this document, [`trivialBuild`](https://github.com/NixOS/nixpkgs/blob/master/pkgs/build-support/emacs/trivial.nix) is a Nixpkgs function to trivially build Emacs packages, if you're confused about it's usage here. You can use it to build e.g. local packages or packages hosted on Git repositories. It is not a nix-doom-emacs tool. It's also in a family of functions in Nixpkgs which are made to build Emacs packages. Such as:
+Though beyond the scope of this document, [`trivialBuild`](https://github.com/NixOS/nixpkgs/blob/master/pkgs/build-support/emacs/trivial.nix) is a nixpkgs function to trivially build Emacs packages. You can use it to build e.g. local packages or packages hosted on Git repositories. There is also a family of functions in nixpkgs which are made to build Emacs packages, such as:
 
-[`generic`](https://github.com/NixOS/nixpkgs/blob/master/pkgs/build-support/emacs/generic.nix): This is the "base" function which all the other build functions are derived from.
+- [`generic`](https://github.com/NixOS/nixpkgs/blob/master/pkgs/build-support/emacs/generic.nix): This is the "base" function which all the other build functions are derived from
+- [`elpaBuild`](https://github.com/NixOS/nixpkgs/blob/master/pkgs/build-support/emacs/elpa.nix): For ELPA packages
+- [`melpaBuild`](https://github.com/NixOS/nixpkgs/blob/master/pkgs/build-support/emacs/elpa.nix): For MELPA packages
 
-[`elpaBuild`](https://github.com/NixOS/nixpkgs/blob/master/pkgs/build-support/emacs/elpa.nix), and [`melpaBuild`](https://github.com/NixOS/nixpkgs/blob/master/pkgs/build-support/emacs/elpa.nix): Those are self-explanatory. To find examples of how they're used, you'll unfortunately have to [search Nixpkgs](https://github.com/NixOS/nixpkgs/search) for them. Luckily, the way they're used in Nixpkgs is very simple.
+To find examples of how they're used, try to [search nixpkgs](https://github.com/NixOS/nixpkgs/search) for usages of them.
 
 # Support
 

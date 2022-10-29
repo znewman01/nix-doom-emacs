@@ -1,4 +1,4 @@
-| [readme](/README.md) | [reference](./reference.md)| faq |
+<table><tr><th>[readme](../README.md)</th><th>[reference](./reference.md)</th><th>**faq**</th></tr></table>
 
 # Frequently Asked Questions
 
@@ -54,7 +54,6 @@ programs.doom-emacs = {
 
 You shouldn't do that. nix-doom-emacs' home-manager module writes `~/.emacs.d` in your `$HOME`. Make sure to remove the environment variables from your configuration, then reboot after rebuilding it. If for just the session, you can just `unset` those 2 variables.
 
-## It erros with "Too many files open"!
+## It errors with "Too many files open"!
 
 Running `ulimit -S -n 2048` will fix it for the duration of your shell session.
-For a more permanent solution, NixOS has [`security.pam.loginLimits`](https://search.nixos.org/options?channel=22.05&from=0&size=50&sort=relevance&type=packages&query=security.pam.loginLimits)
