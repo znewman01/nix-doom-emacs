@@ -75,7 +75,7 @@
   */
 , dependencyOverrides ? { }
 , lib, pkgs, stdenv, buildEnv, makeWrapper
-, runCommand, fetchFromGitHub, substituteAll, writeShellScript
+, runCommand, fetchFromGitHub, writeShellScript
 , writeShellScriptBin, writeTextDir }:
 
 assert (lib.assertMsg ((builtins.isPath doomPrivateDir)
@@ -136,7 +136,7 @@ let
         emacsPackages.overrideScope' overrides;
       emacs = emacsPackages.emacsWithPackages extraPackages;
       emacsLoadFiles = [ ./advice.el ];
-      emacsArgs = [ "--" "install" ];
+      emacsArgs = [ "--" "install" "--no-hooks" "--no-fonts" "--no-env" ];
 
       # Need to reference a store path here, as byte-compilation will bake-in
       # absolute path to source files.
@@ -193,16 +193,13 @@ let
     src = doomSrc;
 
     patches = [
-      (substituteAll {
-        src = ./patches/nix-integration.patch;
-        local = doomLocal;
-      })
+      ./patches/nix-integration.patch
     ];
 
     buildPhase = ''
-      patchShebangs bin
       # Remove the windows wrapper for the CLI so the build doesn't fail
       rm bin/doom.cmd
+      patchShebangs bin
     '';
     installPhase = ''
       mkdir -p $out
@@ -229,8 +226,7 @@ let
   # without installing ~/.emacs.d
   emacs = let
     load-config-from-site = writeTextDir "share/emacs/site-lisp/default.el" ''
-      (message "doom-emacs is not placed in `doom-private-dir',
-      loading from `site-lisp'")
+      (message "doom-emacs is not placed in `doom-private-dir', loading from `site-lisp'")
       ${# TODO: remove once Emacs 29+ is released and commonly available
         lib.optionalString (!isEmacs29) ''
         (load "${doom-emacs}/early-init.el")
@@ -271,10 +267,10 @@ in emacs.overrideAttrs (esuper:
       wrapEmacs() {
           local -a wrapArgs=(
               --set NIX_DOOM_EMACS_BINARY $1
+              --set __DEBUG_doom_emacs_DIR ${doom-emacs}
+              --set __DEBUG_doomLocal_DIR ${doomLocal}
               --set-default DOOMDIR ${doomDir}
               --set-default DOOMLOCALDIR ${doomLocal}
-              --set-default __DEBUG_doom_emacs_DIR ${doom-emacs}
-              --set-default __DEBUG_doomLocal_DIR ${doomLocal}
           )
           ${initDirArgs}
 
