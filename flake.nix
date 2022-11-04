@@ -39,9 +39,6 @@
     # TODO: change back to master once we get synced back with upstream changes
     doom-emacs.url = "github:doomemacs/doomemacs/3853dff5e11655e858d0bfae64b70cb12ef685ac";
     doom-emacs.flake = false;
-    # TODO remove pin once we get synced back with upstream changes
-    doom-modeline.url = "github:seagle0128/doom-modeline/ce9899f00af40edb78f58b9af5c3685d67c8eed2";
-    doom-modeline.flake = false;
     doom-snippets.url = "github:doomemacs/snippets";
     doom-snippets.flake = false;
     emacs-overlay.url = "github:nix-community/emacs-overlay";

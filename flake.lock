@@ -17,23 +17,6 @@
         "type": "github"
       }
     },
-    "doom-modeline": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1648449595,
-        "narHash": "sha256-HjULFxtNDAJ7PDpy/e2bhoDYgBjwGpBdBoTY135puYA=",
-        "owner": "seagle0128",
-        "repo": "doom-modeline",
-        "rev": "ce9899f00af40edb78f58b9af5c3685d67c8eed2",
-        "type": "github"
-      },
-      "original": {
-        "owner": "seagle0128",
-        "repo": "doom-modeline",
-        "rev": "ce9899f00af40edb78f58b9af5c3685d67c8eed2",
-        "type": "github"
-      }
-    },
     "doom-snippets": {
       "flake": false,
       "locked": {
@@ -356,7 +339,6 @@
     "root": {
       "inputs": {
         "doom-emacs": "doom-emacs",
-        "doom-modeline": "doom-modeline",
         "doom-snippets": "doom-snippets",
         "emacs-overlay": "emacs-overlay",
         "emacs-so-long": "emacs-so-long",
