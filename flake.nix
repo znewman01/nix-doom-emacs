@@ -2,8 +2,8 @@
 
    {
      inputs = {
-       home-manager.url = "github:rycee/home-manager";
-       nix-doom-emacs.url = "github:nix-community/nix-doom-emacs/flake";
+       home-manager.url = "github:nix-community/home-manager";
+       nix-doom-emacs.url = "github:nix-community/nix-doom-emacs";
      };
 
      outputs = {
@@ -88,18 +88,39 @@
     flake-compat.flake = false;
   };
 
-  outputs = { self, nixpkgs, flake-utils, emacs-overlay, ... }@inputs:
-    let inherit (flake-utils.lib) eachDefaultSystem eachSystem;
+  outputs = { self, nixpkgs, flake-utils, ... }@inputs:
+    let inherit (flake-utils.lib) eachDefaultSystem mkApp;
     in eachDefaultSystem (system:
       let pkgs = import nixpkgs { inherit system; };
       in {
-        devShell = pkgs.mkShell {
+        apps = {
+          default = self.outputs.apps.${system}.doom-emacs-example;
+          doom-emacs-example = mkApp {
+            drv = self.outputs.packages.${system}.doom-emacs-example;
+            exePath = "/bin/emacs";
+          };
+        };
+
+        devShells.default = pkgs.mkShell {
           buildInputs =
             [ (pkgs.python3.withPackages (ps: with ps; [ PyGithub ])) ];
         };
-        package = { dependencyOverrides ? { }, ... }@args:
-          pkgs.callPackage self
-          (args // { dependencyOverrides = (inputs // dependencyOverrides); });
+
+        package = { ... }@args:
+          pkgs.lib.warn ''
+            nix-doom-emacs no longer supports the deprecated `package` flake output.
+            It will be removed after the release of NixOS 23.05.
+
+            Please use `packages.${system}.default.override { ... }` instead!
+          ''
+          (pkgs.callPackage self args);
+
+        packages = {
+          default = self.outputs.packages.${system}.doom-emacs-example;
+          doom-emacs-example = pkgs.callPackage self {
+            doomPrivateDir = ./test/doom.d;
+          };
+        };
         checks = import ./checks.nix { inherit system; } inputs;
       }) // {
         hmModule = import ./modules/home-manager.nix inputs;

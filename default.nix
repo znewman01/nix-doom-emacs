@@ -50,13 +50,13 @@
      See overrides.nix for addition examples.
 
      Example:
-       emacsPackagesOverlay = self: super: {
+       emacsPackagesOverlay = final: prev: {
          magit-delta = super.magit-delta.overrideAttrs (esuper: {
            buildInputs = esuper.buildInputs ++ [ pkgs.git ];
          });
        };
   */
-, emacsPackagesOverlay ? self: super: { }
+, emacsPackagesOverlay ? final: prev: { }
   /* Use bundled revision of github.com/nix-community/emacs-overlay
      as `emacsPackages`.
   */

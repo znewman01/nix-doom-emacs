@@ -2,6 +2,7 @@
 { self, nixpkgs, emacs-overlay, ... }@inputs:
 
 let
+  inherit (self.outputs.packages.${system}) doom-emacs-example;
   pkgs = import nixpkgs {
     inherit system;
     # we are not using emacs-overlay's flake.nix here,
@@ -32,13 +33,8 @@ in
       };
     };
   }).activationPackage;
-  init-example-el = self.outputs.package.${system} {
-    doomPrivateDir = ./test/doom.d;
-    dependencyOverrides = inputs;
-  };
-  init-example-el-emacsGit = self.outputs.package.${system} {
-    doomPrivateDir = ./test/doom.d;
-    dependencyOverrides = inputs;
+  init-example-el = doom-emacs-example;
+  init-example-el-emacsGit = doom-emacs-example.override {
     emacsPackages = with pkgs; emacsPackagesFor emacsGit;
   };
   init-example-el-splitdir = self.outputs.package.${system} {
