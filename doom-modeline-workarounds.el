@@ -1,4 +1,4 @@
-;;; workarounds.el --- Description -*- lexical-binding: t; -*-
+;;; doom-modeline-workarounds.el --- Description -*- lexical-binding: t; -*-
 ;;; Re-added functions removed in https://github.com/seagle0128/doom-modeline/commit/b596440ee78b3e7d2debc3d73f4d938d968fb896
 
 ;;;###autoload
