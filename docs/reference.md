@@ -1,6 +1,6 @@
 | index |     |     |
 | --- | --- | --- |
-|[readme](../README.md)|**reference**|[faq](./docs/faq.md)|
+|[readme](../README.md)|**reference**|[faq](./faq.md)|
 
 # nix-doom-emacs reference
 

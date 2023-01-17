@@ -1,6 +1,6 @@
 | index |     |     |
 | --- | --- | --- |
-|[readme](../README.md)|[reference](./docs/reference.md)|**faq**|
+|[readme](../README.md)|[reference](./reference.md)|**faq**|
 
 # Frequently Asked Questions
 
