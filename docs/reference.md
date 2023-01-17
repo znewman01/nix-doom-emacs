@@ -19,7 +19,7 @@ In all of these methods, you'll need your Doom Emacs configuration. It should co
 ```nix
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable"
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager";
     nix-doom-emacs.url = "github:nix-community/nix-doom-emacs";
   };
@@ -85,13 +85,13 @@ in {
     nix-doom-emacs,
     ...
   }: {
-    nixosConfigurations.exampleHost = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.exampleHost = nixpkgs.lib.nixosSystem rec {
       system  = "x86_64-linux";
       modules = [
         { 
           environment.systemPackages = 
             let
-              doom-emacs = inputs.nix-doom-emacs.packages.${system}.default.override {
+              doom-emacs = nix-doom-emacs.packages.${system}.default.override {
                 doomPrivateDir = ./doom.d;
               };
             in [
@@ -183,7 +183,7 @@ If you're using the Home-Manager module, you can use the `emacsPackage` attribut
 programs.doom-emacs = {
   enable = true;
   doomPrivateDir = ./doom.d;
-  emacsPackage = pkgs.emacsPgtkNativeComp;
+  emacsPackage = pkgs.emacsPgtk;
 }
 ```
 
