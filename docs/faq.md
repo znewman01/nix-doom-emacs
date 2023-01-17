@@ -1,4 +1,6 @@
-<table><tr><th>[readme](../README.md)</th><th>[reference](./reference.md)</th><th>**faq**</th></tr></table>
+| index |     |     |
+| --- | --- | --- |
+|[readme](../README.md)|[reference](./docs/reference.md)|**faq**|
 
 # Frequently Asked Questions
 

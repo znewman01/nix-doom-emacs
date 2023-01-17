@@ -1,4 +1,6 @@
-<table><tr><th>**readme**</th><th>[reference](./docs/reference.md)</th><th>[faq](./docs/faq.md)</th></tr></table>
+| index |     |     |
+| --- | --- | --- |
+|**readme**|[reference](./docs/reference.md)|[faq](./docs/faq.md)|
 
 # nix-doom-emacs
 
