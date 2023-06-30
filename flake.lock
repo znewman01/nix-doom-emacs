@@ -291,11 +291,11 @@
     "org-yt": {
       "flake": false,
       "locked": {
-        "lastModified": 1527381913,
-        "narHash": "sha256-dzQ6B7ryzatHCTLyEnRSbWO0VUiX/FHYnpHTs74aVUs=",
+        "lastModified": 1687927059,
+        "narHash": "sha256-JvL//lZNESFJpBi+qN6GGAo854iK/hZpF0LXSOy0BK4=",
         "owner": "TobiasZawada",
         "repo": "org-yt",
-        "rev": "40cc1ac76d741055cbefa13860d9f070a7ade001",
+        "rev": "2d921921a6067e77a8128c79ceccdeed30f87b8e",
         "type": "github"
       },
       "original": {
