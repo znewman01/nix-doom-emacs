@@ -20,11 +20,11 @@
     "doom-snippets": {
       "flake": false,
       "locked": {
-        "lastModified": 1662645711,
-        "narHash": "sha256-XKpPCtECGZQ5bFPPDUX3oAltXOJNwAI/OktxiLnADRE=",
+        "lastModified": 1717730545,
+        "narHash": "sha256-XRSlU8q554oy6BWezI5tO67TYf22d1VAINBJ4uabSo0=",
         "owner": "doomemacs",
         "repo": "snippets",
-        "rev": "03a62fe7edf7e87fdbd925713fbd3bf292d14b00",
+        "rev": "3a0b029c5d104521ede8dcbeaff2972f56f067dc",
         "type": "github"
       },
       "original": {
