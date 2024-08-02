@@ -100,11 +100,11 @@
     "evil-org-mode": {
       "flake": false,
       "locked": {
-        "lastModified": 1607203864,
-        "narHash": "sha256-JxwqVYDN6OIJEH15MVI6XOZAPtUWUhJQWHyzcrUvrFg=",
+        "lastModified": 1722290792,
+        "narHash": "sha256-3li3Y1kyof6+i2qgHxDtfA8KQWPw6tPSbc1vjGpUI4c=",
         "owner": "hlissner",
         "repo": "evil-org-mode",
-        "rev": "a9706da260c45b98601bcd72b1d2c0a24a017700",
+        "rev": "06518c65ff4f7aea2ea51149d701549dcbccce5d",
         "type": "github"
       },
       "original": {
