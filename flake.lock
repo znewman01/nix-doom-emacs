@@ -400,11 +400,11 @@
     "ts-fold": {
       "flake": false,
       "locked": {
-        "lastModified": 1673328482,
-        "narHash": "sha256-6yQ35uJDAK531QNQZgloQaOQayRa8azOlOMbO8lXsHE=",
+        "lastModified": 1745362549,
+        "narHash": "sha256-thLNRWAXPBDjnV2a7ba7M1Sw79FZjGKDAW4v90VlTpU=",
         "owner": "jcs-elpa",
         "repo": "ts-fold",
-        "rev": "75d6f9ed317b042b5bc7cb21503596d1c7a1b8c0",
+        "rev": "6eed69cf2b97dce9c6ad329710ed42f0ad674f76",
         "type": "github"
       },
       "original": {
