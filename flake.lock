@@ -275,11 +275,11 @@
     "org-contrib": {
       "flake": false,
       "locked": {
-        "lastModified": 1664301003,
-        "narHash": "sha256-8CAq/EB52RMQHNLZM0uc/1N5gKTfxGhf7WFt9sMKoD8=",
+        "lastModified": 1760193939,
+        "narHash": "sha256-He9XRAbo5uxqPwfIISkzq23ceeZ11zCM1BaKoeV1T9Y=",
         "owner": "emacsmirror",
         "repo": "org-contrib",
-        "rev": "aa104c0bbc3113f6d3d167b20bd8d6bf6a285f0f",
+        "rev": "90e1d6bd6288615233dae273f0525a43a9d8779d",
         "type": "github"
       },
       "original": {
