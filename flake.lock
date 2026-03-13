@@ -323,11 +323,11 @@
     "revealjs": {
       "flake": false,
       "locked": {
-        "lastModified": 1674652670,
-        "narHash": "sha256-ViqeZlOjQTlY0KM7YcOOjdgkxRLPMZrRKXTqtyc1I00=",
+        "lastModified": 1773338762,
+        "narHash": "sha256-Nr9Zz7+CS4gTtALMgK9adioB/gXFpgnOVtzlBCCxrSM=",
         "owner": "hakimel",
         "repo": "reveal.js",
-        "rev": "b1a9842b2f4544a2fda546383db38cc7a81f6b74",
+        "rev": "2abcfe71c918b469bf92f96728b227e26ee01492",
         "type": "github"
       },
       "original": {
